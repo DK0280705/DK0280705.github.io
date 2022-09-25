@@ -109,3 +109,11 @@ a {
     color: #1a1a1a;
     font-weight: 800;
 }
+
+.footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding: 24px;
+    border-top: 1px solid #3c3c3c;
+}
