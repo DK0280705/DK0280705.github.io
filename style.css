@@ -38,7 +38,16 @@ a {
 }
 
 .section {
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.section:first-child {
+    padding-top: 24px;
+}
+
+.section:last-child {
+    padding-bottom: 24px;
 }
 
 .large-shadow {
@@ -85,8 +94,7 @@ a {
 }
 
 .flat-card {
-    padding: 24px 32px;
-    margin-bottom: 24px;
+    padding: 48px;
     width: 100%;
     color: #ececec;
 }
