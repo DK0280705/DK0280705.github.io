@@ -42,7 +42,7 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
 }
 
 .card {
-    padding: 16px 24px;
+    padding: 24px 32px;
     margin-bottom: 24px;
 
     border: 1px solid #3c3c3c;
@@ -56,11 +56,27 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
 
 .card .title {
     font-optical-sizing: auto;
-    font-family: "IBM Plex Mono";
     font-weight: 700;
     font-size: 48px;
+    margin: 0px 0px 24px 0px;
+}
+
+.card .text {
+    font-weight: 800;
+    font-size: 18px;
+    margin-right: 200px;
 }
 
 .card:last-child {
     margin-bottom: 0px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+}
+
+.warn {
+    background-color: #ffee58;
+    color: #1a1a1a;
+    font-weight: 800;
 }
