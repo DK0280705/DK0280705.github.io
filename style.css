@@ -56,8 +56,7 @@ a {
 
 #main-title {
     color: #da3450;
-    padding-right: 8px;
-    border-right: 8px solid #ececec;
+    border-right: 24px solid #ececec;
 }
 
 @keyframes blink-caret {
@@ -89,10 +88,6 @@ a {
     margin-right: 200px;
 }
 
-.card:last-child {
-    margin-bottom: 0px;
-}
-
 .flat-card {
     padding: 48px;
     width: 100%;
@@ -100,7 +95,7 @@ a {
 }
 
 .profile-picture {
-    border: 2px solid #3c3c3c;
+    border: 2px solid #da3450;
     border-radius: 50%;
 }
 
@@ -111,8 +106,6 @@ a {
 }
 
 .footer {
-    position: fixed;
-    width: 100%;
     bottom: 0;
     padding: 24px;
     border-top: 1px solid #3c3c3c;

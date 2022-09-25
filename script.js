@@ -7,6 +7,7 @@
         let i = 0;
         const titleTyping = () => {
             if (i < title.length) {
+                document.getElementById("main-title").style.animation = "";
                 document.getElementById("main-title").innerHTML += title.charAt(i);
                 i++;
                 setTimeout(titleTyping, 100);
@@ -14,6 +15,7 @@
                 document.getElementById("main-title").style.animation = "blink-caret 1s steps(1) infinite";
             }
         };
-        titleTyping();
+        document.getElementById("main-title").style.animation = "blink-caret 1s steps(1) infinite";
+        setTimeout(titleTyping, 2000);
     };
 })()
