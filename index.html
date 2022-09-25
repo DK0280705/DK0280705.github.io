@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>The name is DK</title>
+        <script src="script.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
@@ -12,13 +13,13 @@
             <div class="card large-shadow">
                 <div style="display: flex;">
                     <div style="width: 100%; position: relative;">
-                            <div style="bottom: 0; left: 0; position: absolute; padding: 24px 8px;">
-                        <p class="title" style="color: #da3450;">
-                            The Name is DK
-                        </p>
-                        <p class="text" style="color: #ececec;">
-                            A human filled with big curiosity.<br>Having interest in programming, graphic designing, music composing, and everything about this world.
-                        </p>
+                        <div style="bottom: 0; left: 0; position: absolute; padding: 24px 16px;">
+                            <div class="title">
+                                <span id="main-title"></span>
+                            </div>
+                            <p class="text" style="color: #ececec;">
+                                A human filled with big curiosity.<br>Having interest in programming, graphic designing, music composing, and everything about this world.
+                            </p>
                         </div>
                     </div>
                     <div>
@@ -30,5 +31,6 @@
                 Still WIP...
             </div>
         </div>
+        <div id="black" style="height: 100%; width: 100%; background-color: #1a1a1a; position: fixed; z-index: 1; left: 0; top: 0;"></div>
     </body>
 </html>

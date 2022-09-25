@@ -41,6 +41,16 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
     box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);  
 }
 
+#main-title {
+    color: #da3450;
+    padding-right: 8px;
+    border-right: 8px solid #ececec;
+}
+
+@keyframes blink-caret {
+    50% { border-color: transparent; }
+}
+
 .card {
     padding: 24px 32px;
     margin-bottom: 24px;
@@ -49,7 +59,6 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
     border-radius: 8px;
 
     width: 100%;
-    min-height: 96px;
 
     background-color: #212121;
 }
