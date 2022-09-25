@@ -29,6 +29,10 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
     vertical-align: baseline;
 }
 
+a {
+    color: #26bbd9;
+}
+
 .root {
     width: 100%;
 }
@@ -80,7 +84,15 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
     margin-bottom: 0px;
 }
 
+.flat-card {
+    padding: 24px 32px;
+    margin-bottom: 24px;
+    width: 100%;
+    color: #ececec;
+}
+
 .profile-picture {
+    border: 2px solid #3c3c3c;
     border-radius: 50%;
 }
 
