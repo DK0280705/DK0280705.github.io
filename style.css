@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+::selection {
+  color: black;
+  background: #cecece;
+}
+
 html {
     height: 100%;
     width: 100%;
@@ -14,7 +19,7 @@ body {
     line-height: initial;
     margin: 0px;
     max-width: 100%;
-    background-color: #1a1a1a;
+    background-color: #0a0a0a;
     color: #ececec;
 }
 
@@ -38,16 +43,10 @@ a {
 }
 
 .section {
-    padding-left: 24px;
-    padding-right: 24px;
-}
-
-.section:first-child {
-    padding-top: 24px;
-}
-
-.section:last-child {
-    padding-bottom: 24px;
+    background-color: #1a1a1a;
+    position: relative;
+    z-index: 2;
+    padding: 4rem 2rem;
 }
 
 .large-shadow {
@@ -56,23 +55,63 @@ a {
 
 #main-title {
     color: #da3450;
-    border-right: 24px solid #ececec;
+    border-right: 24px solid #cecece;
 }
 
 @keyframes blink-caret {
     50% { border-color: transparent; }
 }
 
+.banner {
+    padding: 9rem 4rem;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: #0a0a0a;
+}
+
+.banner .banner-content {
+    position: relative;
+    width: 100%;
+}
+
+.banner .banner-back-text {
+    font-weight: 800;
+    font-size: 36rem;
+    position: absolute;
+    color: #1a1a1a;
+    left: 10vw;
+    z-index: 1;
+    font-family: Sans-serif;
+    user-select: none;
+}
+
 .card {
     padding: 24px 32px;
-    margin-bottom: 24px;
-
     border: 1px solid #3c3c3c;
     border-radius: 8px;
-
     width: 100%;
-
     background-color: #212121;
+}
+
+.text-zone {
+    position: relative;
+    width: 50%;
+    z-index: 1;
+}
+
+.banner-content .text-zone {
+    font-family: monospace;
+    font-weight: 800;
+}
+
+.banner-content .title {
+    font-size: 5rem;
+    margin: 0 0 36px 0;
+}
+
+.banner-content .text {
+    font-size: 1rem;
 }
 
 .card .title {
