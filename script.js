@@ -1,6 +1,5 @@
 (() => {
     const title = [ "Yo", ", the name is DK" ];
-
     window.onload = (event) => {
         document.getElementById("black").style.display = "none";
 
