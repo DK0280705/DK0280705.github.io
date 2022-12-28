@@ -51,8 +51,16 @@ a {
     padding: 4rem 2rem;
 }
 
+.section-second {
+    background-color: #cecece;
+}
+
 .large-shadow {
-    box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56);  
+    box-shadow: 0 12px 40px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px #1a1a1a;
+}
+
+.large-shadow-up {
+    box-shadow: 0 -12px 64px 4px rgba(0, 0, 0, 0.6);
 }
 
 #main-title {
@@ -62,6 +70,24 @@ a {
 
 @keyframes blink-caret {
     50% { border-color: transparent; }
+}
+
+.line-decor-1 {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    z-index: 4;
+    transform: translateY(8px);
+    border-top: 8px solid #1a1a1a;
+}
+
+.line-decor-2 {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    z-index: 4;
+    transform: translateY(-16px);
+    border-top: 8px solid #1a1a1a;
 }
 
 .banner {
@@ -150,7 +176,6 @@ a {
 .card .text {
     font-weight: 800;
     font-size: 18px;
-    margin-right: 200px;
 }
 
 .flat-card {
