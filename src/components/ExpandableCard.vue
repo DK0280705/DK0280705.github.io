@@ -165,10 +165,10 @@ watch(isOpen, (value) => {
         <AnimatePresence>
             <div
                 v-if="isOpen"
-                class="fixed inset-0 grid place-items-center p-8 z-[2001] pointer-events-none"
+                class="fixed inset-0 grid place-items-stretch sm:place-items-center p-0 sm:p-8 z-[2001] pointer-events-none"
             >
                 <motion.div
-                    class="relative flex flex-col gap-6 w-full max-w-[min(80vw,1024px)] max-h-[min(80vh,100%)] rounded-[1.25rem] bg-[rgba(6,6,6,0.95)] border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.45)] overflow-hidden pointer-events-auto"
+                    class="relative flex flex-col gap-6 w-full h-full sm:h-auto max-w-full sm:max-w-[min(80vw,1024px)] sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-[1.25rem] bg-[rgba(6,6,6,0.95)] border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] overflow-hidden pointer-events-auto"
                     :layout-id="`ec-${title}`"
                 >
                     <section

@@ -59,92 +59,21 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title glowing-text">
+    <section class="relative flex min-h-screen w-full items-center justify-center px-4 sm:px-6 lg:px-10 py-14 ">
+        <div class="relative z-10 flex w-full max-w-4xl flex-col items-center gap-6 px-6 py-12 sm:px-10 sm:py-14">
+            <h1 class="w-full text-left text-4xl font-black leading-tight text-white tracking-tight sm:text-center sm:text-6xl md:text-7xl lg:text-8xl">
                 {{ displayedTitle }}
-                <span v-if="cursorVisible" class="typing-cursor">|</span>
+                <span v-if="cursorVisible" class="ml-1 inline-block text-white/70">|</span>
             </h1>
-            <motion.p
+            <motion.h2
                 v-if="subtitleVisible"
-                class="hero-subtitle"
+                class="w-full text-left text-base font-normal leading-relaxed text-white/70 sm:text-center sm:text-lg md:text-xl"
                 :initial="{ opacity: 0, y: 16 }"
                 :animate="{ opacity: 1, y: 0 }"
                 :transition="{ duration: 0.3, ease: 'easeOut' }"
             >
                 Your average programmer with passion for developing games.
-            </motion.p>
+            </motion.h2>
         </div>
     </section>
 </template>
-
-<style scoped>
-.hero-section {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-    width: 100%;
-}
-
-.hero-content {
-    width: 560px;
-    height: 400px;
-    z-index: 10;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 3rem;
-    box-sizing: border-box;
-}
-
-.hero-title {
-    text-align: left;
-    font-size: clamp(2.5rem, 8vw, 8rem);
-    font-weight: 900;
-    color: var(--text-primary);
-    margin: 0 0 1rem 0;
-    line-height: 1.2;
-    background-clip: text;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-}
-
-.glowing-text {
-    font-size: 5rem;
-    line-height: 1;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    letter-spacing: -1px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    text-align: center;
-}
-
-.typing-cursor {
-    display: inline-block;
-    margin-left: 0.1em;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.hero-subtitle {
-    text-align: left;
-    font-size: clamp(1.125rem, 4vw, 1.5rem);
-    color: var(--text-secondary);
-    margin: 0;
-    font-weight: 400;
-    opacity: 0.8;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.4;
-}
-
-</style>
