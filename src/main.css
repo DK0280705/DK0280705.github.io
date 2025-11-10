@@ -81,56 +81,7 @@ body {
 }
 
 * {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-}
-
-*::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    background: transparent;
-}
-
-html.custom-scrollbar-visible * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb-color) transparent;
-}
-
-html.custom-scrollbar-visible *::-webkit-scrollbar {
-    width: var(--scrollbar-size);
-    height: var(--scrollbar-size);
-    background: transparent;
-}
-
-html.custom-scrollbar-visible *::-webkit-scrollbar-track {
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.06),
-        rgba(255, 255, 255, 0.02)
-    );
-    border-radius: calc(var(--scrollbar-size) / 1.25);
-    margin: 4px;
-}
-
-html.custom-scrollbar-visible *::-webkit-scrollbar-thumb {
-    border-radius: var(--scrollbar-size);
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.7),
-        rgba(255, 255, 255, 0.42)
-    );
-    border: 3px solid rgba(0, 0, 0, 0);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    transition: background 0.2s ease, box-shadow 0.2s ease;
-}
-
-html.custom-scrollbar-visible *::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-        180deg,
-        var(--scrollbar-thumb-hover),
-        rgba(255, 255, 255, 0.66)
-    );
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+    scrollbar-width: none;
 }
 
 @theme inline {
@@ -226,6 +177,10 @@ html.custom-scrollbar-visible *::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     padding: 4rem 3rem;
     box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch
 }
 
 .section-content {

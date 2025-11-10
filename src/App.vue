@@ -60,20 +60,15 @@ const handlePillTabClick = (index: number) => {
     animateScrollTo(target);
 };
 
-const handleWheel = (event: WheelEvent) => {
-    if (!isManualScrolling.value) return;
-    if (Math.abs(event.deltaY) >= Math.abs(event.deltaX) && Math.abs(event.deltaY) > WHEEL_SCROLL_THRESHOLD) {
-        const nextIndex = event.deltaY > 0
-            ? Math.min(activeTabId.value + 1, sections.length - 1)
-            : Math.max(activeTabId.value - 1, 0);
-        const targetElement = sectionRefs.value[nextIndex]; 
-        if (!targetElement) return;
-        animateScrollTo(targetElement);
-        activeTabId.value = nextIndex;
-
-        event.preventDefault();
-    }
-};
+const handleScroll = (_: Event) => {
+    if (!scrollerRef.value) return;
+    const width = scrollerRef.value.clientWidth;
+    const center = width / 2;
+    const scrollLeft = scrollerRef.value.scrollLeft;
+    const nextIndex = Math.floor((center + scrollLeft) / width)
+    if (activeTabId.value == nextIndex) return;
+    activeTabId.value = nextIndex;
+}
 
 const isWebGlSupported = () => {
     try {
@@ -86,18 +81,6 @@ const isWebGlSupported = () => {
     }
 };
 
-const handleScrollEnd = (_: Event) => {
-    if (!isManualScrolling.value) return;
-    const container = scrollerRef.value;
-    if (!container) return;
-
-    const scrollLeft = container.scrollLeft;
-    const containerWidth = container.clientWidth;
-
-    const newIndex = Math.round(scrollLeft / containerWidth);
-    activeTabId.value = newIndex;
-};
-
 const handleHeroReady = () => {
     pillTabsVisible.value = true;
 };
@@ -108,11 +91,9 @@ watchEffect((onCleanup) => {
     const container = scrollerRef.value;
     if (!container) return;
 
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("scrollend", handleScrollEnd);
+    container.addEventListener("scroll", handleScroll);
     onCleanup(() => {
-        container.removeEventListener("wheel", handleWheel);
-        container.removeEventListener("scrollend", handleScrollEnd);
+        container.removeEventListener("scroll", handleScroll);
     });
 });
 
@@ -248,17 +229,6 @@ onBeforeUnmount(() => {
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
-}
-
-.section-scroller::-webkit-scrollbar {
-    display: none;
-}
-
-.scroll-section {
-    flex: 0 0 100vw;
-    height: 100%;
-    scroll-snap-align: start;
-    padding: 3rem;
 }
 
 .scroll-section-hero {
