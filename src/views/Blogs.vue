@@ -15,7 +15,7 @@ interface BlogCard {
 const blogCards: BlogCard[] = [
     {
         title: "Test Title 1",
-        subtitle: "This is a longer subtitle for testing",
+        subtitle: "This is a massive long subtitle for testing yes yes yes",
         description: "",
         imageSrc: previewImage,
         tags: ["Game", "Development", "Research"],
@@ -34,7 +34,7 @@ const blogCards: BlogCard[] = [
         subtitle: "It works",
         description: "",
         imageSrc: previewImage,
-        tags: ["WebGL", "Graphics", "Balls"],
+        tags: ["WebGL", "Graphics", "Balls", "Sigma", "Development"],
         markdownFile: "helloworld.md",
     },
 ];

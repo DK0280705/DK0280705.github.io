@@ -189,12 +189,11 @@ watch(isOpen, (value) => {
                                 />
                                 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/95"/>
                             </motion.div>
-                            <div class="relative z-50 w-full px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
-                                <motion.p :layout-id="`ec-subtitle-${title}`" class="text-base text-white/75">{{ subtitle }}</motion.p>
-                                <motion.h2 :layout-id="`ec-title-${title}`" class="text-2xl font-extrabold text-white/95">{{ modalHeading }}</motion.h2>
-                                <motion.ul
+                            <motion.div :layout-id="`ec-info-${title}`" class="z-50 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
+                                <p class="text-base text-white/75">{{ subtitle }}</p>
+                                <h2 class="text-2xl font-extrabold text-white/95">{{ modalHeading }}</h2>
+                                <ul
                                     v-if="hasTags"
-                                    :layout-id="`ec-tags-${title}`"
                                     class="flex flex-wrap gap-1.5 mt-2 list-none"
                                 >
                                     <li
@@ -204,8 +203,8 @@ watch(isOpen, (value) => {
                                     >
                                         {{ tag }}
                                     </li>
-                                </motion.ul>
-                            </div>
+                                </ul>
+                            </motion.div>
                         </div>
                         <div class="flex flex-col gap-4 pt-4">
                             <div class="flex-1 min-h-0">
@@ -260,12 +259,9 @@ watch(isOpen, (value) => {
                     loading="lazy"
                 />
             </motion.div>
-            <div class="mt-1 z-50 text-left flex flex-col gap-1 text-white/90 overflow-hidden">
+            <motion.div :layout-id="`ec-info-${title}`" class="z-50 p-2 flex flex-col gap-1 text-white/90">
                 <div ref="subtitleWrapperRef" class="overflow-hidden">
-                    <motion.p
-                        :layout-id="`ec-subtitle-${title}`"
-                        class="text-base text-white/70 whitespace-nowrap"
-                    >
+                    <p class="text-base text-white/70 whitespace-nowrap">
                         <span
                             ref="subtitleTextRef"
                             class="inline-flex"
@@ -274,13 +270,10 @@ watch(isOpen, (value) => {
                         >
                             {{ subtitle }}
                         </span>
-                    </motion.p>
+                    </p>
                 </div>
                 <div ref="titleWrapperRef" class="overflow-hidden">
-                    <motion.h2
-                        :layout-id="`ec-title-${title}`"
-                        class="text-xl font-extrabold text-white whitespace-nowrap"
-                    >
+                    <h2 class="text-xl font-extrabold text-white whitespace-nowrap">
                         <span
                             ref="titleTextRef"
                             class="inline-flex"
@@ -289,9 +282,9 @@ watch(isOpen, (value) => {
                         >
                             {{ title }}
                         </span>
-                    </motion.h2>
+                    </h2>
                 </div>
-                <motion.ul v-if="hasTags" :layout-id="`ec-tags-${title}`" class="flex flex-wrap gap-1.5 mt-2 list-none">
+                <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
                     <li
                         v-for="tag in props.tags"
                         :key="tag"
@@ -299,8 +292,8 @@ watch(isOpen, (value) => {
                     >
                         {{ tag }}
                     </li>
-                </motion.ul>
-            </div>
+                </ul>
+            </motion.div>
         </motion.div>
     </AnimatePresence>
 </template>
