@@ -4,7 +4,7 @@ import photo from "@/assets/dk.jpg";
 
 <template>
     <div class="section-content my-auto">
-        <div class="flex flex-col md:flex-row gap-10 mt-8 px-4 py-5">
+        <div class="flex flex-col md:flex-row gap-10 my-8 px-4 py-5">
             <main class="text-left">
                 <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6x mb-8">About</h2>
                 <p class="mb-5 font-semibold text-white/80">A carefree programmer that likes to try new things</p> 
