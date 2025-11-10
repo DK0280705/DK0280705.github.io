@@ -70,6 +70,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     float hue = fract(uTime * 0.1 + pixelizedUV.x * 0.35 + pixelizedUV.y * 0.45 + characterProgress * 0.1);
     vec3 rainbow = hsv2rgb(vec3(hue, 0.9, 1.0));
     asciiCharacter.rgb = characterProgress * (rainbow * asciiCharacter.r * 0.4 + gradientEffect(pixelizedUV, uTime) * 0.05);
+    asciiCharacter.rgb = clamp(asciiCharacter.rgb, 0.0, 1.0);
     asciiCharacter.a = pixelized.a;
     outputColor = asciiCharacter;
 }
@@ -224,7 +225,7 @@ const initScene = () => {
     camera = new PerspectiveCamera(35, container.clientWidth / Math.max(container.clientHeight, 1), 0.1, 100);
     camera.position.set(0, 0, 6);
 
-    renderer = new WebGLRenderer();
+    renderer = new WebGLRenderer({alpha: true});
     renderer.setClearColor(0x000000, 1);
     renderer.domElement.style.pointerEvents = 'none';
     renderer.domElement.style.width = '100%';
