@@ -235,12 +235,6 @@ onBeforeUnmount(() => {
     padding: 0;
 }
 
-@media (max-width: 768px) {
-    .scroll-section {
-        padding: 3rem 1.5rem;
-    }
-}
-
 /* Additional subtle dots for depth */
 .bg-gradient {
     background-image: radial-gradient(
