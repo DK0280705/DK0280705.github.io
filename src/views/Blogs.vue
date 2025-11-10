@@ -99,7 +99,7 @@ const clearTags = () => {
                     :class="tagConfig(null)"
                     @click="clearTags()"
                 >
-                    All
+                    None
                 </button>
                 <button
                     v-for="tag in allTags"
@@ -116,7 +116,7 @@ const clearTags = () => {
 
         <div
             v-if="filteredCards.length"
-            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-16"
         >
             <ExpandableCard
                 v-for="card in filteredCards"

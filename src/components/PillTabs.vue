@@ -206,7 +206,6 @@ watch(activeTab, (newIndex) => {
 
     .pill-tabs {
         gap: 0.25rem;
-        padding: 0.25rem;
     }
 
     .pill-tab {

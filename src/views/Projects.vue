@@ -81,7 +81,7 @@ const clearTags = () => {
                     :class="tagConfig(null)"
                     @click="clearTags()"
                 >
-                    All
+                    None
                 </button>
                 <button
                     v-for="tag in allTags"
@@ -98,20 +98,18 @@ const clearTags = () => {
 
         <div
             v-if="filteredCards.length"
-            class="flex-1 overflow-visible pr-1"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-8"
         >
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                <ExpandableCard
-                    v-for="card in filteredCards"
-                    :key="card.title"
-                    :title="card.title"
-                    :subtitle="card.subtitle"
-                    :description="card.description"
-                    :image-src="card.imageSrc"
-                    :tags="card.tags"
-                    :markdown-file="card.markdownFile"
-                />
-            </div>
+            <ExpandableCard
+                v-for="card in filteredCards"
+                :key="card.title"
+                :title="card.title"
+                :subtitle="card.subtitle"
+                :description="card.description"
+                :image-src="card.imageSrc"
+                :tags="card.tags"
+                :markdown-file="card.markdownFile"
+            />
         </div>
         <div
             v-else
