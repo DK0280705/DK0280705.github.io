@@ -17,15 +17,17 @@ const projectCards = [
 <template>
     <div class="section-content w-full h-full flex flex-col gap-6">
         <header
-            class="mt-8 px-6 py-5"
+            class="mt-8 flex flex-col gap-3 px-4 py-5 text-left sm:px-6 md:gap-4" 
         >
-            <h2 class="section-title">Projects</h2>
-            <p class="section-description mt-2">
+            <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                Projects
+            </h2>
+            <p class="text-base leading-relaxed text-white/70 sm:text-lg md:max-w-3xl md:text-xl">
                 Some projects and researches that I have worked on with links to source code.
             </p>
         </header>
 
-        <div class="flex-1 overflow-y-auto pr-1">
+        <div class="flex-1 overflow-visible pr-1">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 <ExpandableCard
                     v-for="card in projectCards"

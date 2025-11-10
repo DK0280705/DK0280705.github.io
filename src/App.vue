@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import {
-    computed,
     onBeforeUnmount,
     ref,
-    watch,
     watchEffect,
     type Component,
 } from "vue";
@@ -12,6 +10,7 @@ import ProjectsView from "@/views/Projects.vue";
 import BlogsView from "@/views/Blogs.vue";
 import AboutView from "@/views/About.vue";
 import PillTabs from "@/components/PillTabs.vue";
+import AsciiBackground from "@/components/AsciiBackground.vue";
 import { animate } from "motion-v";
 
 interface SectionConfig {
@@ -61,31 +60,25 @@ const handlePillTabClick = (index: number) => {
     animateScrollTo(target);
 };
 
-const handleWheel = (event: WheelEvent) => {
-    if (!isManualScrolling.value) return;
-    if (Math.abs(event.deltaY) >= Math.abs(event.deltaX) && Math.abs(event.deltaY) > WHEEL_SCROLL_THRESHOLD) {
-        const nextIndex = event.deltaY > 0
-            ? Math.min(activeTabId.value + 1, sections.length - 1)
-            : Math.max(activeTabId.value - 1, 0);
-        const targetElement = sectionRefs.value[nextIndex]; 
-        if (!targetElement) return;
-        animateScrollTo(targetElement);
-        activeTabId.value = nextIndex;
+const handleScroll = (_: Event) => {
+    if (!scrollerRef.value) return;
+    const width = scrollerRef.value.clientWidth;
+    const center = width / 2;
+    const scrollLeft = scrollerRef.value.scrollLeft;
+    const nextIndex = Math.floor((center + scrollLeft) / width)
+    if (activeTabId.value == nextIndex) return;
+    activeTabId.value = nextIndex;
+}
 
-        event.preventDefault();
+const isWebGlSupported = () => {
+    try {
+        const canvas = document.createElement("canvas");
+        return !!window.WebGLRenderingContext && !!(
+            canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+        );
+    } catch (e) {
+        return false;
     }
-};
-
-const handleScrollEnd = (event: Event) => {
-    if (!isManualScrolling.value) return;
-    const container = scrollerRef.value;
-    if (!container) return;
-
-    const scrollLeft = container.scrollLeft;
-    const containerWidth = container.clientWidth;
-
-    const newIndex = Math.round(scrollLeft / containerWidth);
-    activeTabId.value = newIndex;
 };
 
 const handleHeroReady = () => {
@@ -98,11 +91,9 @@ watchEffect((onCleanup) => {
     const container = scrollerRef.value;
     if (!container) return;
 
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("scrollend", handleScrollEnd);
+    container.addEventListener("scroll", handleScroll);
     onCleanup(() => {
-        container.removeEventListener("wheel", handleWheel);
-        container.removeEventListener("scrollend", handleScrollEnd);
+        container.removeEventListener("scroll", handleScroll);
     });
 });
 
@@ -114,34 +105,38 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="bg-gradient">
-        <PillTabs
-            v-if="activeTabId !== 0 || pillTabsVisible"
-            :tabs="tabs"
-            v-model="activeTabId"
-            @tab-click="handlePillTabClick"
-        />
-        <main
-            ref="scrollerRef"
-            class="section-scroller"
-            data-scrollbar="horizontal"
-            :style="{ 'scroll-snap-type': isManualScrolling ? 'x mandatory' : 'none' }"
-        >
-            <section
-                v-for="(section, index) in sections"
-                :key="section.key"
-                :id="section.key"
-                :class="[
-                    'scroll-section',
-                    { 'scroll-section-hero': section.isHero },
-                ]"
-                :ref="(el) => sectionRefs[index] = el as HTMLElement"
+        <AsciiBackground v-if="isWebGlSupported()"/>
+        <div v-else class="dots-pattern" />
+        <div class="content-layer">
+            <PillTabs
+                v-if="activeTabId !== 0 || pillTabsVisible"
+                :tabs="tabs"
+                v-model="activeTabId"
+                @tab-click="handlePillTabClick"
+            />
+            <main
+                ref="scrollerRef"
+                class="section-scroller"
+                data-scrollbar="horizontal"
+                :style="{ 'scroll-snap-type': isManualScrolling ? 'x mandatory' : 'none' }"
             >
-                <component
-                    :is="section.component"
-                    v-on="{ 'typing-complete': section.isHero ? handleHeroReady : () => {} }"
-                />
-            </section>
-        </main>
+                <section
+                    v-for="(section, index) in sections"
+                    :key="section.key"
+                    :id="section.key"
+                    :class="[
+                        'scroll-section',
+                        { 'scroll-section-hero': section.isHero },
+                    ]"
+                    :ref="(el) => sectionRefs[index] = el as HTMLElement"
+                >
+                    <component
+                        :is="section.component"
+                        v-on="{ 'typing-complete': section.isHero ? handleHeroReady : () => {} }"
+                    />
+                </section>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -153,7 +148,13 @@ onBeforeUnmount(() => {
     overflow: hidden;
 }
 
-.bg-gradient::before {
+.content-layer {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+}
+
+.dots-pattern {
     content: "";
     position: absolute;
     top: 0;
@@ -186,15 +187,27 @@ onBeforeUnmount(() => {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
+    background-image: radial-gradient(
         circle at 50% 50%,
-        rgba(216, 29, 29, 0.175),
+        rgba(29, 29, 216, 0.2),
         transparent 80%
     );
-    animation: pulse 8s ease-in-out infinite;
+    animation:
+        pulse 8s ease-in-out infinite,
+        gradient-cycle 16s ease-in-out infinite;
     transform: translate3d(calc(var(--parallax-shift) * -0.5), 0, 0);
     transition: transform 0.35s ease-out;
     will-change: transform;
+}
+
+@keyframes gradient-cycle {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 @keyframes pulse {
@@ -218,25 +231,8 @@ onBeforeUnmount(() => {
     scrollbar-width: none;
 }
 
-.section-scroller::-webkit-scrollbar {
-    display: none;
-}
-
-.scroll-section {
-    flex: 0 0 100vw;
-    height: 100%;
-    scroll-snap-align: start;
-    padding: 3rem;
-}
-
 .scroll-section-hero {
     padding: 0;
-}
-
-@media (max-width: 768px) {
-    .scroll-section {
-        padding: 3rem 1.5rem;
-    }
 }
 
 /* Additional subtle dots for depth */

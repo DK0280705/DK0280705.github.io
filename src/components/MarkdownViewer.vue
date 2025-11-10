@@ -86,7 +86,7 @@ const renderedContent = computed(() => {
 </script>
 
 <template>
-    <div class="width-full max-w-2xl mx-auto">
+    <div class="width-full max-w-2xl px-8 mx-auto">
         <div v-if="error" class="markdown-state markdown-error">
             {{ error }}
         </div>

@@ -16,7 +16,7 @@ interface BlogCard {
 const blogCards: BlogCard[] = [
     {
         title: "Test Title 1",
-        subtitle: "This is a longer subtitle for testing",
+        subtitle: "This is a massive long subtitle for testing yes yes yes",
         description: "",
         imageSrc: previewImage,
         tags: ["Game", "Development", "Research"],
@@ -35,7 +35,7 @@ const blogCards: BlogCard[] = [
         subtitle: "It works",
         description: "",
         imageSrc: previewImage,
-        tags: ["WebGL", "Graphics", "Balls"],
+        tags: ["WebGL", "Graphics", "Balls", "Sigma", "Development"],
         markdownFile: "helloworld.md",
     },
 ];
@@ -63,10 +63,12 @@ const isTagActive = (tag: string) => selectedTag.value === tag;
 <template>
     <div class="section-content w-full h-full flex flex-col gap-6">
         <header
-            class="mt-8 px-6 py-5"
+            class="mt-8 flex flex-col gap-3 px-4 py-5 text-left sm:px-6 md:gap-4"
         >
-            <h2 class="section-title">Blogs</h2>
-            <p class="section-description mt-2 mb-8">
+            <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                Blogs
+            </h2>
+            <p class="text-base leading-relaxed text-white/70 sm:text-lg md:max-w-3xl md:text-xl">
                 Some thoughts and writings on my projects and experiences.
             </p>
 

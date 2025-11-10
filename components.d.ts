@@ -11,6 +11,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AsciiBackground: typeof import('./src/components/AsciiBackground.vue')['default']
+    AsciiDonutBackground: typeof import('./src/components/AsciiDonutBackground.vue')['default']
     ExpandableCard: typeof import('./src/components/ExpandableCard.vue')['default']
     MarkdownViewer: typeof import('./src/components/MarkdownViewer.vue')['default']
     PillTabs: typeof import('./src/components/PillTabs.vue')['default']
