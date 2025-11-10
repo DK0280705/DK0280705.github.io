@@ -24,21 +24,10 @@ const fragment = `
 uniform sampler2D uCharacters;
 uniform float uCharactersCount;
 uniform float uCellSize;
-uniform bool uInvert;
-uniform vec3 uColor;
 uniform float uTime;
 
 const vec2 SIZE = vec2(16.);
 const mat2 NOISE_ROT = mat2(0.8, 0.6, -0.6, 0.8);
-
-vec3 greyscale(vec3 color, float strength) {
-    float g = dot(color, vec3(0.299, 0.587, 0.114));
-    return mix(color, vec3(g), strength);
-}
-
-vec3 greyscale(vec3 color) {
-    return greyscale(color, 1.0);
-}
 
 vec3 hsv2rgb(vec3 c) {
     vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
@@ -69,25 +58,18 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     vec2 grid = 1.0 / cell;
     vec2 pixelizedUV = grid * (0.5 + floor(uv / grid));
     vec4 pixelized = texture2D(inputBuffer, pixelizedUV);
-    float greyscaled = greyscale(pixelized.rgb).r;
-
-    if (uInvert) {
-        greyscaled = 1.0 - greyscaled;
-    }
-
+    float greyscaled = dot(pixelized.rgb, vec3(0.299, 0.587, 0.114));
     float characterIndex = floor((uCharactersCount - 1.0) * greyscaled);
     vec2 characterPosition = vec2(mod(characterIndex, SIZE.x), floor(characterIndex / SIZE.y));
     vec2 offset = vec2(characterPosition.x, -characterPosition.y) / SIZE;
-    vec2 charUV = mod(uv * (cell / SIZE), 1.0 / SIZE) - vec2(0., 1.0 / SIZE) + offset;
+    vec2 cellPerSize = cell / SIZE;
+    vec2 charUV = mod(uv * cellPerSize, vec2(1.0) / SIZE) - vec2(0., 1.0 / SIZE) + offset;
     vec4 asciiCharacter = texture2D(uCharacters, charUV);
 
     float characterProgress = (characterIndex + 1.0) / uCharactersCount;
     float hue = fract(uTime * 0.1 + pixelizedUV.x * 0.35 + pixelizedUV.y * 0.45 + characterProgress * 0.1);
     vec3 rainbow = hsv2rgb(vec3(hue, 0.9, 1.0));
-    vec3 tinted = mix(uColor, rainbow, 0.8);
-    asciiCharacter.rgb = tinted * asciiCharacter.r * characterProgress * 0.4;
-    asciiCharacter.rgb += gradientEffect(pixelizedUV, uTime) * characterProgress * 0.05;
-    asciiCharacter.rgb = clamp(asciiCharacter.rgb, 0.0, 1.0);
+    asciiCharacter.rgb = characterProgress * (rainbow * asciiCharacter.r * 0.4 + gradientEffect(pixelizedUV, uTime) * 0.05);
     asciiCharacter.a = pixelized.a;
     outputColor = asciiCharacter;
 }
@@ -106,15 +88,11 @@ class ASCIIEffect extends Effect {
         characters = ` .:,'-^=*+?!|0#X%WM@`,
         fontSize = 54,
         cellSize = 16,
-        color = '#ffffff',
-        invert = false
     }: IASCIIEffectProps = {}) {
         const uniforms = new Map<string, Uniform>([
             ['uCharacters', new Uniform(new Texture())],
             ['uCellSize', new Uniform(cellSize)],
             ['uCharactersCount', new Uniform(characters.length)],
-            ['uColor', new Uniform(new Color(color))],
-            ['uInvert', new Uniform(invert)],
             ['uTime', new Uniform(0)]
         ]);
 
@@ -171,23 +149,23 @@ class ASCIIEffect extends Effect {
         return texture;
     }
 }
-const containerRef = ref<HTMLDivElement | null>(null);
+const containerRef = ref<HTMLDivElement>();
 
-let renderer: WebGLRenderer | undefined;
-let composer: EffectComposer | undefined;
-let camera: PerspectiveCamera | undefined;
-let scene: Scene | undefined;
-let donut: Mesh | undefined;
-let asciiEffect: ASCIIEffect | undefined;
-let animationId: number | undefined;
-let isInitialized = false;
+let renderer: WebGLRenderer;
+let composer: EffectComposer;
+let camera: PerspectiveCamera;
+let scene: Scene;
+let donut: Mesh;
+let asciiEffect: ASCIIEffect;
+let animationId: number;
 
 const clock = new Clock();
+const rotationSpeed = { x: 0.6, y: 1.0 };
+const lastRendererSize = { width: 0, height: 0 };
+let timeUniform: Uniform<number>;
 
 const disposeDonut = () => {
-    if (!donut) return;
-
-    scene?.remove(donut);
+    scene.remove(donut);
     donut.geometry.dispose();
 
     if (Array.isArray(donut.material)) {
@@ -195,30 +173,29 @@ const disposeDonut = () => {
     } else {
         donut.material.dispose();
     }
-
-    donut = undefined;
 };
 
 const disposeComposerResources = () => {
-    if (!asciiEffect) return;
-
     const charactersTex = asciiEffect.uniforms.get('uCharacters')?.value;
     if (charactersTex instanceof Texture) {
         charactersTex.dispose();
     }
-
     asciiEffect.dispose();
-    asciiEffect = undefined;
 };
 
 const updateRendererSize = () => {
-    if (!renderer || !composer || !camera) return;
-
-    const container = containerRef.value;
-    if (!container) return;
+    const container = containerRef.value!;
 
     const width = container.clientWidth;
     const height = Math.max(container.clientHeight, 1);
+
+    if (width === lastRendererSize.width && height === lastRendererSize.height) {
+        return;
+    }
+
+    lastRendererSize.width = width;
+    lastRendererSize.height = height;
+
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
 
     camera.aspect = width / height;
@@ -234,32 +211,20 @@ const renderFrame = () => {
     const delta = clock.getDelta();
     const elapsed = clock.getElapsedTime();
 
-    if (asciiEffect) {
-        const timeUniform = asciiEffect.uniforms.get('uTime');
-        if (timeUniform) {
-            timeUniform.value = elapsed;
-        }
-    }
-
-    if (donut) {
-        donut.rotation.x += delta * 0.6;
-        donut.rotation.y += delta * 1.0;
-    }
-
-    composer?.render(delta);
+    timeUniform.value = elapsed;
+    donut.rotation.x += delta * rotationSpeed.x;
+    donut.rotation.y += delta * rotationSpeed.y;
+    composer.render(delta);
 };
 
 const initScene = () => {
-    const container = containerRef.value;
-    if (!container) return false;
-
+    const container = containerRef.value!;
     scene = new Scene();
 
     camera = new PerspectiveCamera(35, container.clientWidth / Math.max(container.clientHeight, 1), 0.1, 100);
     camera.position.set(0, 0, 6);
 
-    renderer = new WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: false });
-    if (!renderer) return false;
+    renderer = new WebGLRenderer();
     renderer.setClearColor(0x000000, 1);
     renderer.domElement.style.pointerEvents = 'none';
     renderer.domElement.style.width = '100%';
@@ -275,11 +240,12 @@ const initScene = () => {
         cellSize: 32,
         color: '#f4f4f4',
     });
+    timeUniform = asciiEffect.uniforms.get('uTime') as Uniform<number>;
 
     const asciiPass = new EffectPass(camera, asciiEffect);
     composer.addPass(asciiPass);
 
-    const torusGeometry = new TorusGeometry(2.5, 1.2, 64, 256);
+    const torusGeometry = new TorusGeometry(2.5, 1.2, 8, 24);
     const torusMaterial = new MeshStandardMaterial({
         color: 0xfff1f1,
         metalness: 0.15,
@@ -300,8 +266,6 @@ const initScene = () => {
     updateRendererSize();
     clock.start();
     renderFrame();
-
-    return true;
 };
 
 const handleResize = () => {
@@ -309,34 +273,27 @@ const handleResize = () => {
 };
 
 onMounted(() => {
-    isInitialized = initScene();
-    if (isInitialized) {
-        window.addEventListener('resize', handleResize);
-    }
+    initScene();
+    window.addEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {
-    if (isInitialized) {
-        window.removeEventListener('resize', handleResize);
-    }
+    window.removeEventListener('resize', handleResize);
 
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = undefined;
-    }
+    cancelAnimationFrame(animationId);
+
+    clock.stop();
 
     disposeDonut();
     disposeComposerResources();
 
-    composer?.dispose();
-    composer = undefined;
+    composer.dispose();
 
-    renderer?.dispose();
-    renderer?.domElement.remove();
-    renderer = undefined;
+    renderer.dispose();
+    renderer.domElement.remove();
 
-    scene = undefined;
-    camera = undefined;
+    lastRendererSize.width = 0;
+    lastRendererSize.height = 0;
 });
 
 </script>
