@@ -40,7 +40,7 @@ const blogCards: BlogCard[] = [
     },
 ];
 
-const selectedTag = ref<string | null>(null);
+const selectedTags = ref<string[]>([]);
 
 const allTags = computed(() => {
     const tagSet = new Set<string>();
@@ -49,15 +49,32 @@ const allTags = computed(() => {
 });
 
 const filteredCards = computed(() => {
-    if (!selectedTag.value) return blogCards;
-    return blogCards.filter((card) => card.tags.includes(selectedTag.value!));
+    if (!selectedTags.value.length) return blogCards;
+    return blogCards.filter((card) =>
+        selectedTags.value.every((tag) => card.tags.includes(tag))
+    );
 });
 
 const toggleTag = (tag: string) => {
-    selectedTag.value = selectedTag.value === tag ? null : tag;
+    const index = selectedTags.value.indexOf(tag);
+    if (index !== -1) {
+        selectedTags.value.splice(index, 1);
+    } else {
+        selectedTags.value.push(tag);
+    }
 };
 
-const isTagActive = (tag: string) => selectedTag.value === tag;
+const tagConfig = (tag: string | null) => {
+    const isSelected = tag === null ? !selectedTags.value.length : selectedTags.value.includes(tag);
+    if (isSelected) {
+        return "bg-white text-black shadow-lg shadow-black/30";
+    }
+    return "bg-white/10 text-white/80 hover:bg-white/20";
+};
+
+const clearTags = () => {
+    selectedTags.value = [];
+};
 </script>
 
 <template>
@@ -78,9 +95,9 @@ const isTagActive = (tag: string) => selectedTag.value === tag;
             >
                 <button
                     type="button"
-                    class="rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-sm text-white/80 transition hover:-translate-y-0.5 hover:bg-white/20"
-                    :class="{ 'bg-white text-black shadow-lg shadow-black/30': !selectedTag }"
-                    @click="selectedTag = null"
+                    class="rounded-full border border-white/10 px-4 py-1.5 text-sm transition hover:-translate-y-0.5"
+                    :class="tagConfig(null)"
+                    @click="clearTags()"
                 >
                     All
                 </button>
@@ -88,8 +105,8 @@ const isTagActive = (tag: string) => selectedTag.value === tag;
                     v-for="tag in allTags"
                     :key="tag"
                     type="button"
-                    class="rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-sm text-white/80 transition hover:-translate-y-0.5 hover:bg-white/20"
-                    :class="{ 'bg-white text-black shadow-lg shadow-black/30': isTagActive(tag) }"
+                    class="rounded-full border border-white/10 px-4 py-1.5 text-sm transition hover:-translate-y-0.5"
+                    :class="tagConfig(tag)"
                     @click="toggleTag(tag)"
                 >
                     {{ tag }}
@@ -97,7 +114,10 @@ const isTagActive = (tag: string) => selectedTag.value === tag;
             </div>
         </header> 
 
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div
+            v-if="filteredCards.length"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+        >
             <ExpandableCard
                 v-for="card in filteredCards"
                 :key="card.title"
@@ -108,6 +128,22 @@ const isTagActive = (tag: string) => selectedTag.value === tag;
                 :tags="card.tags"
                 :markdown-file="card.markdownFile"
             />
+        </div>
+        <div
+            v-else
+            class="flex flex-1 flex-col items-center justify-center gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-12 text-center text-white/70"
+        >
+            <h3 class="text-2xl font-semibold text-white">No matching posts</h3>
+            <p class="max-w-md text-base">
+                Try selecting different tags or clear your filters to discover another story.
+            </p>
+            <button
+                type="button"
+                class="rounded-full border border-white/10 bg-white/10 px-5 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+                @click="clearTags()"
+            >
+                Reset filters
+            </button>
         </div>
     </div>
 </template>

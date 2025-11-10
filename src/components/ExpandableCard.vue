@@ -4,9 +4,6 @@ import {
     onMounted,
     onBeforeUnmount,
     computed,
-    watch,
-    nextTick,
-    type CSSProperties,
 } from "vue";
 import { AnimatePresence, motion } from "motion-v";
 import MarkdownViewer from "./MarkdownViewer.vue";
@@ -58,65 +55,6 @@ const modalHeading = computed(() => props.modalTitle || props.title);
 const resolvedMarkdownFile = computed(() => props.markdownFile || props.title);
 const hasTags = computed(() => (props.tags?.length ?? 0) > 0);
 
-const subtitleWrapperRef = ref<HTMLElement>();
-const subtitleTextRef = ref<HTMLElement>();
-const titleWrapperRef = ref<HTMLElement>();
-const titleTextRef = ref<HTMLElement>();
-
-const subtitleOverflow = ref(0);
-const titleOverflow = ref(0);
-
-const hasSubtitleOverflow = computed(() => subtitleOverflow.value > 0);
-const hasTitleOverflow = computed(() => titleOverflow.value > 0);
-
-const computeDuration = (distance: number) => {
-    const duration = distance / 24;
-    return Math.min(18, Math.max(6, duration || 0));
-};
-
-const subtitleDuration = computed(() =>
-    hasSubtitleOverflow.value ? computeDuration(subtitleOverflow.value) : 0
-);
-const titleDuration = computed(() =>
-    hasTitleOverflow.value ? computeDuration(titleOverflow.value) : 0
-);
-
-const subtitleMarqueeStyle = computed<CSSProperties | undefined>(() => {
-    if (!hasSubtitleOverflow.value) return undefined;
-    return {
-        "--marquee-distance": `${subtitleOverflow.value}px`,
-        "--marquee-duration": `${subtitleDuration.value}s`,
-    };
-});
-
-const titleMarqueeStyle = computed<CSSProperties | undefined>(() => {
-    if (!hasTitleOverflow.value) return undefined;
-    return {
-        "--marquee-distance": `${titleOverflow.value}px`,
-        "--marquee-duration": `${titleDuration.value}s`,
-    };
-});
-
-const updateOverflow = () => {
-    const subtitleWrapper = subtitleWrapperRef.value;
-    const subtitleText = subtitleTextRef.value;
-    if (subtitleWrapper && subtitleText) {
-        const overflow = subtitleText.scrollWidth - subtitleWrapper.clientWidth;
-        subtitleOverflow.value = overflow > 8 ? overflow : 0;
-    } else {
-        subtitleOverflow.value = 0;
-    }
-
-    const titleWrapper = titleWrapperRef.value;
-    const titleText = titleTextRef.value;
-    if (titleWrapper && titleText) {
-        const overflow = titleText.scrollWidth - titleWrapper.clientWidth;
-        titleOverflow.value = overflow > 8 ? overflow : 0;
-    } else {
-        titleOverflow.value = 0;
-    }
-};
-
 const handleKeydown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
         closeModal();
@@ -125,27 +63,12 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 onMounted(() => {
     window.addEventListener("keydown", handleKeydown);
-    nextTick(updateOverflow);
-    window.addEventListener("resize", updateOverflow);
 });
 
 onBeforeUnmount(() => {
     window.removeEventListener("keydown", handleKeydown);
-    window.removeEventListener("resize", updateOverflow);
 });
 
-watch(
-    () => [props.title, props.subtitle],
-    () => {
-        nextTick(updateOverflow);
-    }
-);
-
-watch(isOpen, (value) => {
-    if (!value) {
-        nextTick(updateOverflow);
-    }
-});
 </script>
 
 <template>
@@ -191,7 +114,7 @@ watch(isOpen, (value) => {
                             </motion.div>
                             <motion.div :layout-id="`ec-info-${title}`" class="z-50 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
                                 <p class="text-base text-white/75">{{ subtitle }}</p>
-                                <h2 class="text-2xl font-extrabold text-white/95">{{ modalHeading }}</h2>
+                                <h2 class="text-2xl font-extrabold text-white">{{ modalHeading }}</h2>
                                 <ul
                                     v-if="hasTags"
                                     class="flex flex-wrap gap-1.5 mt-2 list-none"
@@ -260,30 +183,12 @@ watch(isOpen, (value) => {
                 />
             </motion.div>
             <motion.div :layout-id="`ec-info-${title}`" class="z-50 p-2 flex flex-col gap-1 text-white/90">
-                <div ref="subtitleWrapperRef" class="overflow-hidden">
-                    <p class="text-base text-white/70 whitespace-nowrap">
-                        <span
-                            ref="subtitleTextRef"
-                            class="inline-flex"
-                            :class="{ marquee: hasSubtitleOverflow }"
-                            :style="subtitleMarqueeStyle"
-                        >
-                            {{ subtitle }}
-                        </span>
-                    </p>
-                </div>
-                <div ref="titleWrapperRef" class="overflow-hidden">
-                    <h2 class="text-xl font-extrabold text-white whitespace-nowrap">
-                        <span
-                            ref="titleTextRef"
-                            class="inline-flex"
-                            :class="{ marquee: hasTitleOverflow }"
-                            :style="titleMarqueeStyle"
-                        >
-                            {{ title }}
-                        </span>
-                    </h2>
-                </div>
+                <p class="text-base text-white/75">
+                    {{ subtitle }}
+                </p>
+                <h2 class="text-xl font-extrabold text-white">
+                    {{ title }}
+                </h2>
                 <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
                     <li
                         v-for="tag in props.tags"
