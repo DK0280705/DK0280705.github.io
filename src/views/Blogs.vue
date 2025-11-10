@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
 import previewImage from "@/assets/oiia.avif";
+import previewGif from "@/assets/oiia-cat.gif"
 
 interface BlogCard {
     title: string;
@@ -25,7 +26,7 @@ const blogCards: BlogCard[] = [
         title: "Test for a very long title that might span multiple lines yes yes yes",
         subtitle: "Short subtitle",
         description: "",
-        imageSrc: previewImage,
+        imageSrc: previewGif,
         tags: ["UI/UX", "Research", "Performance"],
         markdownFile: "helloworld.md",
     },
