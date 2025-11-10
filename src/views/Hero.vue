@@ -67,7 +67,7 @@ onMounted(() => {
             </h1>
             <motion.h2
                 v-if="subtitleVisible"
-                class="w-full text-left text-base font-normal leading-relaxed text-white/70 sm:text-center sm:text-lg md:text-xl"
+                class="w-full text-left text-base font-normal leading-relaxed text-white/70 sm:text-center sm:text-lg md:text-2xl"
                 :initial="{ opacity: 0, y: 16 }"
                 :animate="{ opacity: 1, y: 0 }"
                 :transition="{ duration: 0.3, ease: 'easeOut' }"
