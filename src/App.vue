@@ -2,6 +2,7 @@
 import {
     onBeforeUnmount,
     ref,
+    onMounted,
     watchEffect,
     type Component,
 } from "vue";
@@ -35,6 +36,8 @@ const sectionRefs = ref<HTMLElement[]>([]);
 const pillTabsVisible = ref(false);
 const isManualScrolling = ref(true);
 
+const focusableSelectors = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 const animateScrollTo = (target: HTMLElement) => {
     const container = scrollerRef.value;
     if (!container) return;
@@ -57,6 +60,66 @@ const handlePillTabClick = (index: number) => {
     const target = sectionRefs.value[index];
     if (!target) return;
     animateScrollTo(target);
+};
+
+const goToIndex = (index: number) => {
+    if (index < 0 || index >= sections.length) return;
+    const target = sectionRefs.value[index];
+    if (!target) return;
+    activeTabId.value = index;
+    animateScrollTo(target);
+};
+
+const prevSection = () => goToIndex(activeTabId.value - 1);
+const nextSection = () => goToIndex(activeTabId.value + 1);
+
+const isElementVisible = (element: HTMLElement) => {
+    const rect = element.getBoundingClientRect();
+    if (!rect.width && !rect.height) return false;
+    const style = window.getComputedStyle(element);
+    if (style.visibility === "hidden" || style.display === "none") return false;
+    return element.offsetParent !== null || style.position === "fixed";
+};
+
+const cycleFocusableInSection = (reverse: boolean) => {
+    const activeSection = sectionRefs.value[activeTabId.value];
+    if (!activeSection) return false;
+
+    const focusable = Array.from(
+        activeSection.querySelectorAll<HTMLElement>(focusableSelectors),
+    ).filter(isElementVisible);
+
+    if (!focusable.length) return false;
+
+    const current = document.activeElement as HTMLElement | null;
+    const currentIndex = current ? focusable.indexOf(current) : -1;
+
+    if (currentIndex === -1) {
+        const fallback = reverse
+            ? focusable[focusable.length - 1]
+            : focusable[0];
+        fallback?.focus();
+        return true;
+    }
+
+    const nextIndex = reverse
+        ? (currentIndex - 1 + focusable.length) % focusable.length
+        : (currentIndex + 1) % focusable.length;
+
+    focusable[nextIndex]?.focus();
+    return true;
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === "Tab") {
+        if (cycleFocusableInSection(event.shiftKey)) {
+            event.preventDefault();
+        }
+    } else if (event.key === "ArrowLeft") {
+        prevSection();
+    } else if (event.key === "ArrowRight") {
+        nextSection();
+    }
 };
 
 const handleScroll = (_: Event) => {
@@ -96,8 +159,13 @@ watchEffect((onCleanup) => {
     });
 });
 
+onMounted(() => {
+    window.addEventListener("keydown", handleKeydown);
+});
+
 onBeforeUnmount(() => {
     scrollAnimation?.stop?.();
+    window.removeEventListener("keydown", handleKeydown);
 });
 
 </script>
@@ -229,6 +297,28 @@ onBeforeUnmount(() => {
     overflow-y: hidden;
     scrollbar-width: none;
 }
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    width: 44px;
+    height: 44px;
+    display: inline-grid;
+    place-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    border-radius: 9999px;
+    cursor: pointer;
+}
+
+.nav-arrow.left { left: 12px }
+.nav-arrow.right { right: 12px }
+
+.nav-arrow:hover { background: rgba(255,255,255,0.12) }
 
 .scroll-section-hero {
     padding: 0;

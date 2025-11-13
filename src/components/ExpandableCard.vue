@@ -155,7 +155,7 @@ onBeforeUnmount(() => {
         </AnimatePresence>
     </Teleport>
     <AnimatePresence>
-        <motion.div
+        <motion.button
             v-if="!isOpen"
             class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer backdrop-blur-2xl"
             role="dialog"
@@ -178,10 +178,10 @@ onBeforeUnmount(() => {
                 />
             </motion.div>
             <motion.div layout="position" :layout-id="`ec-info-${title}`" class="p-2 flex flex-col gap-1 text-white/90">
-                <p class="text-base text-white/75">
+                <p class="text-left text-base text-white/75">
                     {{ subtitle }}
                 </p>
-                <h2 class="text-xl font-extrabold text-white">
+                <h2 class="text-left text-xl font-extrabold text-white">
                     {{ title }}
                 </h2>
                 <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
@@ -194,7 +194,7 @@ onBeforeUnmount(() => {
                     </li>
                 </ul>
             </motion.div>
-        </motion.div>
+        </motion.button>
     </AnimatePresence>
 </template>
 
