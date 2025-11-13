@@ -59,8 +59,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="relative flex min-h-screen w-full items-center justify-center px-4 sm:px-6 lg:px-10 py-14 ">
-        <div class="relative z-10 flex w-full max-w-4xl flex-col items-center gap-6 px-6 py-12 sm:px-10 sm:py-14">
+    <section class="relative flex w-full items-center justify-center">
+        <div class="relative z-10 flex w-full max-w-4xl flex-col items-center gap-4 sm:gap-6 px-6 py-12">
             <h1 class="w-full text-left text-4xl font-black leading-tight text-white tracking-tight sm:text-center sm:text-6xl md:text-7xl lg:text-8xl">
                 {{ displayedTitle }}
                 <span v-if="cursorVisible" class="ml-1 inline-block text-white/70">|</span>

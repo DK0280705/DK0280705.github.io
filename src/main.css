@@ -203,4 +203,24 @@ body {
     font-size: clamp(0rem, 2vw, 1.25rem);
 }
 
+@keyframes gradient-cycle {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
 /* stylelint-enable at-rule-no-unknown */
