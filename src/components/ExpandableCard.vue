@@ -51,7 +51,6 @@ const closeModal = () => {
     cardZIndex.value = 2500;
 };
 
-const modalHeading = computed(() => props.modalTitle || props.title);
 const resolvedMarkdownFile = computed(() => props.markdownFile || props.title);
 const hasTags = computed(() => (props.tags?.length ?? 0) > 0);
 
@@ -76,7 +75,7 @@ onBeforeUnmount(() => {
         <AnimatePresence>
             <motion.div
                 v-if="isOpen"
-                class="fixed inset-0 bg-[rgba(10,10,20,0.5)] backdrop-blur-2xl z-[2000]"
+                class="fixed inset-0 bg-[rgba(10,10,20,0.5)] z-[2000]"
                 :initial="{ opacity: 0 }"
                 :animate="{ opacity: 1 }"
                 :exit="{ opacity: 0 }"
@@ -91,34 +90,30 @@ onBeforeUnmount(() => {
                 class="fixed inset-0 grid place-items-stretch sm:place-items-center p-0 sm:p-8 z-[2001] pointer-events-none"
             >
                 <motion.div
-                    class="relative flex flex-col gap-6 w-full h-full sm:h-auto max-w-full sm:max-w-[min(80vw,1024px)] sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-[1.25rem] bg-[rgba(6,6,6,0.95)] border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] overflow-hidden pointer-events-auto"
                     :layout-id="`ec-${title}`"
+                    class="relative overflow-auto w-full h-full sm:h-auto max-w-full sm:max-w-5xl sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-2xl border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] pointer-events-auto"
                 >
                     <section
                         ref="modalBodyRef"
-                        class="overscroll-y-contain flex flex-col gap-5 overflow-y-auto flex-1 min-h-0 scroll-smooth"
+                        class="overscroll-y-contain overflow-y-auto scroll-smooth bg-zinc-950"
                     >
                         <div
                             class="relative overflow-hidden min-h-[40vh] flex items-end"
                         >
                             <motion.div
-                                class="absolute inset-0"
+                                class="absolute inset-0 before:absolute before:inset-0 before:bg-gradient-to-t before:from-zinc-950"
                                 :layout-id="`ec-img-${title}`"
                             >
                                 <img
-                                    class="w-full h-full object-cover"
+                                    class="h-full w-full object-cover object-center"
                                     :src="imageSrc"
                                     :alt="imageAlt || title"
                                 />
-                                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/95"/>
                             </motion.div>
-                            <motion.div :layout-id="`ec-info-${title}`" class="z-50 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
-                                <p class="text-base text-white/75">{{ subtitle }}</p>
-                                <h2 class="text-2xl font-extrabold text-white">{{ modalHeading }}</h2>
-                                <ul
-                                    v-if="hasTags"
-                                    class="flex flex-wrap gap-1.5 mt-2 list-none"
-                                >
+                            <motion.div layout="position" :layout-id="`ec-info-${title}`" class="z-2 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
+                                <p  class="text-base text-white/75">{{ subtitle }}</p>
+                                <h2 class="text-2xl font-extrabold text-white">{{ title }}</h2>
+                                <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
                                     <li
                                         v-for="tag in props.tags"
                                         :key="tag"
@@ -129,14 +124,14 @@ onBeforeUnmount(() => {
                                 </ul>
                             </motion.div>
                         </div>
-                        <div class="flex flex-col gap-4 pt-4">
-                            <div class="flex-1 min-h-0">
+                        <div class="pt-12">
+                            <motion.div layout>
                                 <MarkdownViewer :file="resolvedMarkdownFile" />
-                            </div>
+                            </motion.div>
                         </div>
                     </section>
                     <button
-                        class="absolute top-4 right-4 flex items-center justify-center border border-white/10 bg-white/10 text-white/80 text-xl w-10 h-10 rounded-full cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.2)] backdrop-blur-[40px] transition-colors duration-200 hover:bg-white/30"
+                        class="absolute top-4 right-4 flex items-center justify-center border border-white/10 bg-white/10 text-xl w-10 h-10 rounded-full cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.2)] backdrop-blur-2xl] transition-colors duration-200 hover:bg-white/30"
                         type="button"
                         aria-label="Close"
                         @click="closeModal"
@@ -162,7 +157,7 @@ onBeforeUnmount(() => {
     <AnimatePresence>
         <motion.div
             v-if="!isOpen"
-            class="group flex flex-col gap-3 p-4 rounded-[1.25rem] border border-white/10 shadow-[0_18px_40px_rgba(0,0,0,0.25)] cursor-pointer backdrop-blur-[40px] overflow-hidden hover:shadow-[0_24px_50px_rgba(0,0,0,0.3)]"
+            class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer backdrop-blur-2xl"
             role="dialog"
             :layout-id="`ec-${title}`"
             :style="cardZIndex ? { zIndex: cardZIndex } : undefined"
@@ -173,16 +168,16 @@ onBeforeUnmount(() => {
         >
             <motion.div
                 :layout-id="`ec-img-${title}`"
-                class="relative overflow-hidden rounded-xl w-full shrink-0 aspect-[16/9]"
+                class="relative aspect-[3/2]"
             >
                 <img
-                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    class="h-56 w-full object-cover rounded-lg object-center"
                     :src="imageSrc"
                     :alt="imageAlt || title"
                     loading="lazy"
                 />
             </motion.div>
-            <motion.div :layout-id="`ec-info-${title}`" class="z-50 p-2 flex flex-col gap-1 text-white/90">
+            <motion.div layout="position" :layout-id="`ec-info-${title}`" class="p-2 flex flex-col gap-1 text-white/90">
                 <p class="text-base text-white/75">
                     {{ subtitle }}
                 </p>

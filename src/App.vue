@@ -34,7 +34,6 @@ const scrollerRef = ref<HTMLElement>();
 const sectionRefs = ref<HTMLElement[]>([]);
 const pillTabsVisible = ref(false);
 const isManualScrolling = ref(true);
-const WHEEL_SCROLL_THRESHOLD = 40;
 
 const animateScrollTo = (target: HTMLElement) => {
     const container = scrollerRef.value;

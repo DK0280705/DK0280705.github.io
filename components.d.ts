@@ -16,5 +16,6 @@ declare module 'vue' {
     ExpandableCard: typeof import('./src/components/ExpandableCard.vue')['default']
     MarkdownViewer: typeof import('./src/components/MarkdownViewer.vue')['default']
     PillTabs: typeof import('./src/components/PillTabs.vue')['default']
+    Test: typeof import('./src/components/test.vue')['default']
   }
 }
