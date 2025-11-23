@@ -78,6 +78,10 @@ const handleHeroReady = () => {
     <div class="relative h-screen overflow-hidden bg-black">
         <AsciiBackground v-if="isWebGlSupported()"/>
         <div v-else class="dots-pattern"><div class="bg-gradient"/></div>
+        <div
+            class="absolute h-full w-full z-2 transition-colors duration-700"
+            :class="activeTabId === tabs.length - 1 ? 'bg-black/50' : 'bg-transparent'"
+        />
         <div>
             <PillTabs
                 v-if="activeTabId !== 0 || pillTabsVisible"
@@ -174,6 +178,5 @@ const handleHeroReady = () => {
     overflow-y: hidden;
     scrollbar-width: none;
 }
-
 
 </style>

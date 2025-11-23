@@ -1,38 +1,96 @@
 <script setup lang="ts">
 import photo from "@/assets/dk.jpg";
+
+const toolboxSections = [
+    {
+        title: "Game Development",
+        description: "Prototyping ideas, iterating on gameplay mechanics, and polishing visuals.",
+        tools: ["Godot", "C++", "GLSL", "Aseprite", "FL Studio", "Github"],
+    },
+    {
+        title: "Software Engineering",
+        description: "Automating tasks with scripts and building tools to improve productivity.",
+        tools: ["C/C++", "Rust", "Python", "GitHub Actions"],
+    },
+    {
+        title: "Web Development",
+        description: "Creating responsive designs. This website is using technologies below.",
+        tools: ["Vue", "Vite", "Tailwind", "Github Pages"],
+    },
+    {
+        title: "Server Management",
+        description: "Deployed some projects using cloud services. Using AWS EC2 for hosting and managing personal minecraft server.",
+        tools: ["Docker", "Linux", "Bash", "AWS"],
+    },
+];
 </script>
 
 <template>
     <div class="section-content my-auto">
-        <div class="flex flex-col md:flex-row gap-10 my-8 px-4 py-5">
-            <main class="text-left">
+        <div class="flex flex-col xl:flex-row gap-10 my-8 px-4 py-5">
+            <main class="text-left max-w-2xl">
                 <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6x mb-8">About</h2>
-                <p class="mb-5 font-semibold text-white/80">A carefree programmer that likes to try new things</p> 
-
                 <div class="space-y-4 text-white/80 leading-relaxed">
                     <p>
-                        Hello — I'm DK. I build programs
+                        Hello! I'm Deka, an adventurous programmer that likes to try new things.
+                        I'm from Indonesia and currently studying as an international student in Japan.
+                        I'm passionate about researching and experimenting with new technologies.
+                        Mainly focusing on software engineering, but also interested in game development, web development, and IoT.
                     </p>
-
                     <p>
-                        I'm passionate about researching and experimenting with new technologies
+                        In my free time, I enjoy playing video games, reading manga, watching anime, and exploring new places.
+                        I'm also an avid learner, always looking to expand my knowledge and skills in various fields.
                     </p>
-
                     <p>
-                        --Coming Soon.
+                        Feel free to connect with me on social media or check out my projects on GitHub!
                     </p>
                 </div>
+                <section class="mt-6" aria-labelledby="toolbox-heading">
+                    <h3 id="toolbox-heading" class="text-2xl font-bold text-white mb-3">Tools & Technologies</h3>
+                    <div class="grid gap-4 p-4 sm:grid-cols-2">
+                        <article
+                            v-for="section in toolboxSections"
+                            :key="section.title"
+                            class="flex h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_0_30px_rgba(15,15,15,0.35)] backdrop-blur-2xl transition duration-200 ease-out hover:-translate-y-0.5 hover:border-white/30"
+                        >
+                            <h4 class="text-lg font-semibold text-white">{{ section.title }}</h4>
+                            <p class="mt-2 text-sm text-white/70">
+                                {{ section.description }}
+                            </p>
+                            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+                                <li v-for="tool in section.tools" :key="tool" class="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
+                                    {{ tool }}
+                                </li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+                <h3 class="text-2xl font-bold text-white mt-8 mb-2">Education</h3>
+                <ul class="list-disc pl-6 marker:text-white/50">
+                    <li class="space-y-1 text-white/80">
+                        <a class="inline-flex items-center gap-1 font-bold" href="https://kumamoto-nct.ac.jp/" target="_blank">
+                            Kumamoto National College of Technology
+                            <svg class="h-4 w-4 text-white/70 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M14 3h7v7" />
+                                <path d="M10 14 21 3" />
+                                <path d="M21 13v7H3V3h7" />
+                            </svg>
+                        </a>,
+                        Department of Human-Oriented Information Systems Engineering.
+                    </li>
+                </ul>
             </main>
 
-            <aside class="flex flex-col items-stretch gap-5 max-w-64 max-h-128 ml-auto sm:mr-0 mr-auto">
-                <div class="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-[40px]">
+            <aside class="flex flex-col items-stretch xl:justify-center gap-5 w-64 ml-auto sm:mr-0 mr-auto">
+                <div class="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 before:absolute before:inset-0 before:bg-gradient-to-t before:from-zinc-950/40">
                     <img :src="photo" alt="DK" class="h-full w-full object-cover" />
-                    <span class="absolute inset-x-0 bottom-0 px-4 py-2 text-left text-base font-semibold text-white/90 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.1)_90%)]">
+                    <span class="z-20 absolute inset-x-0 bottom-0 px-4 py-2 text-left text-base font-semibold text-white/90">
                         Deka Risman Permana
                     </span>
                 </div>
 
-                <div class="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-[40px]">
+                <div class="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-2xl">
                     <ul class="flex list-none justify-center gap-2">
                         <li>
                             <a

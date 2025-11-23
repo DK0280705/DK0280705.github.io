@@ -73,7 +73,7 @@ const clearTags = () => {
             </p>
             <div
                 v-if="allTags.length"
-                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 backdrop-blur-md"
+                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 backdrop-blur-2xl"
             >
                 <button
                     type="button"
@@ -98,7 +98,7 @@ const clearTags = () => {
 
         <div
             v-if="filteredCards.length"
-            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-8"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-16 px-4"
         >
             <ExpandableCard
                 v-for="card in filteredCards"

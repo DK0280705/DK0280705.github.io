@@ -116,7 +116,7 @@ const clearTags = () => {
 
         <div
             v-if="filteredCards.length"
-            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-16"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3 pb-16 px-4"
         >
             <ExpandableCard
                 v-for="card in filteredCards"
@@ -131,7 +131,7 @@ const clearTags = () => {
         </div>
         <div
             v-else
-            class="flex flex-1 flex-col items-center justify-center gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-12 text-center text-white/70"
+            class="flex flex-1 flex-col items-center justify-center gap-4 rounded-3xl backdrop-blur-2xl border border-white/10 bg-white/5 px-6 py-12 text-center text-white/70"
         >
             <h3 class="text-2xl font-semibold text-white">No matching posts</h3>
             <p class="max-w-md text-base">
