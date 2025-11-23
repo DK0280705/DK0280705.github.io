@@ -4,9 +4,14 @@ import {
     onMounted,
     onBeforeUnmount,
     computed,
+    defineAsyncComponent,
+    Suspense,
 } from "vue";
 import { AnimatePresence, motion } from "motion-v";
-import MarkdownViewer from "./MarkdownViewer.vue";
+
+const MarkdownViewer = defineAsyncComponent({
+    loader: async () => { await new Promise(r => setTimeout(r, 1000)); return import("./MarkdownViewer.vue"); },
+});
 
 interface Props {
     title: string;
@@ -91,11 +96,11 @@ onBeforeUnmount(() => {
             >
                 <motion.div
                     :layout-id="`ec-${title}`"
-                    class="relative overflow-auto w-full h-full sm:h-auto max-w-full sm:max-w-5xl sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-2xl border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] pointer-events-auto"
+                    class="relative overflow-auto w-full h-full max-w-full sm:max-w-5xl sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-2xl border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] pointer-events-auto"
                 >
                     <section
                         ref="modalBodyRef"
-                        class="overscroll-y-contain overflow-y-auto scroll-smooth bg-zinc-950"
+                        class="overscroll-y-contain overflow-y-auto scroll-smooth h-full bg-zinc-950"
                     >
                         <div
                             class="relative overflow-hidden min-h-[40vh] flex items-end"
@@ -125,9 +130,58 @@ onBeforeUnmount(() => {
                             </motion.div>
                         </div>
                         <div class="pt-12">
-                            <motion.div layout>
+                            <Suspense>
                                 <MarkdownViewer :file="resolvedMarkdownFile" />
-                            </motion.div>
+                                <template #fallback>
+                                    <div class="max-w-2xl px-8 mx-auto flex flex-col gap-8 text-white/60">
+                                        <div class="flex flex-col gap-3">
+                                            <span class="skeleton h-4 w-24 rounded-full"></span>
+                                            <span class="skeleton h-8 w-2/3 rounded-md"></span>
+                                            <span class="skeleton h-5 w-1/2 rounded-md"></span>
+                                        </div>
+                                        <div class="flex flex-col gap-3">
+                                            <span class="skeleton h-4 w-20 rounded-full"></span>
+                                            <span class="skeleton h-4 w-full rounded-md"></span>
+                                            <span class="skeleton h-4 w-[85%] rounded-md"></span>
+                                            <span class="skeleton h-4 w-[70%] rounded-md"></span>
+                                        </div>
+                                        <div class="flex flex-col gap-4">
+                                            <span class="skeleton h-4 w-28 rounded-full"></span>
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="skeleton h-8 w-24 rounded-full"></span>
+                                                <span class="skeleton h-8 w-20 rounded-full"></span>
+                                                <span class="skeleton h-8 w-28 rounded-full"></span>
+                                            </div>
+                                            <span class="skeleton h-4 w-full rounded-md"></span>
+                                            <span class="skeleton h-4 w-[80%] rounded-md"></span>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div class="flex flex-col gap-3">
+                                                <span class="skeleton h-4 w-24 rounded-full"></span>
+                                                <span class="skeleton h-6 w-full rounded-md"></span>
+                                                <span class="skeleton h-6 w-full rounded-md"></span>
+                                                <span class="skeleton h-6 w-3/4 rounded-md"></span>
+                                            </div>
+                                            <div class="flex flex-col gap-3">
+                                                <span class="skeleton h-4 w-28 rounded-full"></span>
+                                                <span class="skeleton h-6 w-full rounded-md"></span>
+                                                <span class="skeleton h-6 w-[60%] rounded-md"></span>
+                                                <span class="skeleton h-6 w-[85%] rounded-md"></span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col gap-3">
+                                            <span class="skeleton h-4 w-24 rounded-full"></span>
+                                            <div class="flex flex-col gap-2">
+                                                <span class="skeleton h-10 w-full rounded-md"></span>
+                                                <span class="skeleton h-10 w-full rounded-md"></span>
+                                                <span class="skeleton h-10 w-[90%] rounded-md"></span>
+                                            </div>
+                                            <span class="skeleton h-4 w-[70%] rounded-md"></span>
+                                            <span class="skeleton h-4 w-[65%] rounded-md"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </Suspense>
                         </div>
                     </section>
                     <button
@@ -212,11 +266,43 @@ onBeforeUnmount(() => {
     animation: marquee var(--marquee-duration, 8s) linear infinite alternate;
 }
 
+.skeleton {
+    position: relative;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.25),
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .marquee {
         animation-duration: 0s;
         animation-iteration-count: 1;
         transform: translateX(0);
+    }
+    .skeleton::after {
+        animation: none;
     }
 }
 </style>

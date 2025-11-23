@@ -1,4 +1,5 @@
 <script lang="ts">
+import hljs from "highlight.js";
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
 import { gfmHeadingId } from "marked-gfm-heading-id";
@@ -24,21 +25,27 @@ marked.use(
 const markdownFiles = import.meta.glob<string>("@/contents/**/*.md", {
     query: "?raw",
     import: "default",
-    eager: true,
 });
 
-const precompiledMarkdown = Object.fromEntries(
-    Object.entries(markdownFiles).map(([key, content]) => [
-        key,
-        marked.parse(content) as string,
-    ]),
-) as Record<string, string>;
+const markdownHtmlCache = new Map<string, string>();
 
+const renderMarkdown = async (key: string): Promise<string | null> => {
+    if (markdownHtmlCache.has(key)) {
+        return markdownHtmlCache.get(key) as string;
+    }
+
+    const loader = markdownFiles[key];
+    if (!loader) return null;
+
+    const raw = await loader();
+    const html = await marked.parse(raw);
+    markdownHtmlCache.set(key, html);
+    return html;
+};
 </script>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import hljs from "highlight.js";
+import { ref, onMounted, h } from "vue";
 import "highlight.js/styles/github-dark.css";
 
 interface Props {
@@ -49,6 +56,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {});
 
 const error = ref<string | null>(null);
+const renderedContent = ref<string>("");
 
 const normalizeKey = (value: string) => {
     const withoutPrefix = value.replace(/^\.\//, "").replace(/^\//, "");
@@ -64,23 +72,31 @@ const normalizeKey = (value: string) => {
     return `/src/contents/${withExtension}`;
 };
 
-const resolvedKey = computed(() => normalizeKey(props.file));
+const resolvedKey = normalizeKey(props.file);
 
-const renderedContent = computed(() => {
-    const key = resolvedKey.value;
-    if (!key) {
-        error.value = "No markdown file provided.";
-        return "";
-    }
+const resetState = (message: string) => {
+    error.value = message;
+    renderedContent.value = "";
+};
 
-    const html = precompiledMarkdown[key];
-    if (!html) {
-        error.value = `Markdown file “${props.file}” was not found in contents.`;
-        return "";
+const loadMarkdown = async () => {
+    if (!resolvedKey) {
+        resetState("No markdown file provided.");
+        return;
     }
 
     error.value = null;
-    return html;
+
+    const html = await renderMarkdown(resolvedKey);
+    if (html === null) {
+        resetState(`Markdown file “${props.file}” was not found in contents.`);
+        return;
+    }
+    renderedContent.value = html;
+};
+
+onMounted(() => {
+    loadMarkdown();
 });
 
 </script>
@@ -111,6 +127,11 @@ const renderedContent = computed(() => {
 .markdown-error {
     color: rgba(255, 149, 149, 0.9);
     border-color: rgba(255, 149, 149, 0.45);
+    margin: 0 0 2.25rem;
+}
+
+.markdown-loading {
+    color: rgba(255, 255, 255, 0.75);
     margin: 0 0 2.25rem;
 }
 
