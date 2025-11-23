@@ -63,7 +63,7 @@ const clearTags = () => {
 <template>
     <div class="section-content w-full h-full flex flex-col gap-6">
         <header
-            class="mt-8 flex flex-col gap-3 px-4 py-5 text-left sm:px-6 md:gap-4" 
+            class="mt-8 flex flex-col gap-3 px-4 py-5 text-left md:gap-4" 
         >
             <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 Projects
@@ -73,7 +73,7 @@ const clearTags = () => {
             </p>
             <div
                 v-if="allTags.length"
-                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3 backdrop-blur-2xl"
+                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 p-4 backdrop-blur-2xl"
             >
                 <button
                     type="button"
