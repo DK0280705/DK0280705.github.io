@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
                                 </ul>
                             </motion.div>
                         </div>
-                        <div class="pt-12">
+                        <div class="pt-8">
                             <Suspense>
                                 <MarkdownViewer :file="resolvedMarkdownFile" />
                                 <template #fallback>
