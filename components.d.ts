@@ -13,7 +13,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     AsciiBackground: typeof import('./src/components/AsciiBackground.vue')['default']
     ExpandableCard: typeof import('./src/components/ExpandableCard.vue')['default']
-    MarkdownLoading: typeof import('./src/components/MarkdownLoading.vue')['default']
     MarkdownViewer: typeof import('./src/components/MarkdownViewer.vue')['default']
     PillTabs: typeof import('./src/components/PillTabs.vue')['default']
   }

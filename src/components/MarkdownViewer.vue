@@ -27,6 +27,43 @@ const markdownFiles = import.meta.glob<string>("@/contents/**/*.md", {
     import: "default",
 });
 
+const assetFiles = import.meta.glob<string>("@/assets/**/*", {
+    eager: true,
+    import: "default",
+});
+
+const normalizeAssetKey = (value: string) =>
+    value.replace(/^@\//, "/src/")
+
+const assetUrlMap = new Map(Object.entries(assetFiles));
+console.log(assetUrlMap);
+
+const isExternalSrc = (value: string) =>
+    /^(?:[a-z][\w.+-]*:|\/\/)/i.test(value) || value.startsWith("data:");
+
+const resolveImageSrc = (src?: string | null): string | null => {
+    if (!src) return null;
+
+    const trimmed = src.trim();
+    if (isExternalSrc(trimmed)) return trimmed;
+
+    return assetUrlMap.get(normalizeAssetKey(trimmed)) ?? trimmed;
+};
+
+const rewriteImageSources = (html: string): string => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    doc.querySelectorAll("img[src]").forEach((img) => {
+        const resolved = resolveImageSrc(img.getAttribute("src"));
+        if (resolved) {
+            img.setAttribute("src", resolved);
+        }
+    });
+
+    return doc.body.innerHTML;
+};
+
 const markdownHtmlCache = new Map<string, string>();
 
 const renderMarkdown = async (key: string): Promise<string | null> => {
@@ -37,15 +74,16 @@ const renderMarkdown = async (key: string): Promise<string | null> => {
     const loader = markdownFiles[key];
     if (!loader) return null;
 
-    const raw = await loader();
-    const html = await marked.parse(raw);
-    markdownHtmlCache.set(key, html);
-    return html;
+    const markdown = await loader();
+    const html = await marked.parse(markdown);
+    const resolvedHtml = rewriteImageSources(html);
+    markdownHtmlCache.set(key, resolvedHtml);
+    return resolvedHtml;
 };
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, h } from "vue";
+import { ref, onMounted, } from "vue";
 import "highlight.js/styles/github-dark.css";
 
 interface Props {

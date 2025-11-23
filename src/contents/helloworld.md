@@ -87,34 +87,34 @@ This is a [reference link][ref1] and another [reference link][ref2].
 
 ### Images
 
-![Hello World Image](assets/oiia.avif)
+![Hello World Image](@/assets/oiia.avif)
 
 #### Different Image Sizes (using HTML for control)
 
-<img src="public/assets/oiia.avif" alt="Small Image" width="150" height="100" style="object-fit: cover;">
-<img src="assets/oiia.avif" alt="Medium Image" width="300" height="200" style="object-fit: cover;">
-<img src="assets/oiia.avif" alt="Large Image" width="500" height="300" style="object-fit: cover;">
+<img src="@/assets/oiia.avif" alt="Small Image" width="150" height="100" style="object-fit: cover;">
+<img src="@/assets/oiia.avif" alt="Medium Image" width="300" height="200" style="object-fit: cover;">
+<img src="@/assets/oiia.avif" alt="Large Image" width="500" height="300" style="object-fit: cover;">
 
 #### Images with Titles (hover to see)
 
-![Portfolio Image](assets/oiia.avif "My Amazing Portfolio Image")
+![Portfolio Image](@/assets/oiia.avif "My Amazing Portfolio Image")
 
 #### Reference-style Images
 
 ![Main Image][main-image]
 ![Secondary Image][secondary-image]
 
-[main-image]: assets/oiia.avif "Main Portfolio Image"
-[secondary-image]: assets/oiia.avif "Secondary Portfolio Image"
+[main-image]: @/assets/oiia.avif "Main Portfolio Image"
+[secondary-image]: @/assets/oiia.avif "Secondary Portfolio Image"
 
 #### HTML Images for Advanced Control
 
-<img src="assets/oiia.avif" alt="HTML controlled image" width="200" height="150" style="border-radius: 10px; object-fit: cover;">
+<img src="@/assets/oiia.avif" alt="HTML controlled image" width="200" height="150" style="border-radius: 10px; object-fit: cover;">
 
 #### Centered Image (using HTML)
 
 <div align="center">
-  <img src="assets/oiia.avif" alt="Centered image" width="300" height="200" style="object-fit: cover;">
+  <img src="@/assets/oiia.avif" alt="Centered image" width="300" height="200" style="object-fit: cover;">
 </div>
 
 ---
