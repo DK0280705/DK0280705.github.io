@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
         >
             <motion.div
                 :layout-id="`ec-img-${title}`"
-                class="relative aspect-[3/2]"
+                class="relative"
             >
                 <img
                     class="h-56 w-full object-cover rounded-lg object-center"
