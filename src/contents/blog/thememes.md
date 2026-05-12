@@ -25,9 +25,5 @@ we animate using bones.
 
 - **Save system:** 3-slot file-based saves using Godot's `File` class (`user://save1`–`save3`). `Save_system` stores the last checkpoint scene path; `Global.goto_scene()` handles scene transitions with optional spawn position and flip.
 
-- **Juice / UX:** Camera shake (`shake()`/`quake()`) with configurable power and decay, `Tween`-based fade transitions, parallax scrolling backgrounds via `ParallaxLayer`, custom pause/confirm menus, and an achievement popup that aggregates all three minigame scores.
-
-- **Projectile variety:** `Bullet` class supports delayed homing (`look_at(target)`), speed export, and auto-cleanup on screen exit. Some bullets carry random Indonesian meme labels (e.g., "Fakta", "Bing Chilling", "Kamu nanya?").
-
 Here is the preview of the game:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gWwKPxuc2t4?si=nXi39s1hPw-lo-6T" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

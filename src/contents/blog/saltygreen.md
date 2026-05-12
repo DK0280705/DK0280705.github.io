@@ -1,7 +1,5 @@
 [source code](https://github.com/KoloidStudios/salty-green)
 
-![Salty Green preview](@/assets/salty-green-preview-video.webp)
-
 This is the third game our team planned to make,
 i was motivated enough to work in it, created the game loop and ideas,
 but as our game designer said, due to not enough selling points,
@@ -38,3 +36,5 @@ The overall result isn't a perfect simulation — no wave resistance, no added-m
 
 *Sources: [Momentum theory, Wikipedia](https://en.wikipedia.org/wiki/Momentum_theory), [Propeller Thrust (Simple Momentum Theory)](https://www.grc.nasa.gov/www/k-12/airplane/propth.html)*
 *
+
+![Salty Green preview](@/assets/salty-green-preview-video.webp)

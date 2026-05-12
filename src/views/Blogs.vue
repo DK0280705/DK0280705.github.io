@@ -6,6 +6,8 @@ import previewGif from "@/assets/oiia-cat.gif"
 import saltyGreenPreview from "@/assets/salty-green-preview.png"
 import theMemesPreview from "@/assets/the-memes-preview.png"
 import mirPreview from "@/assets/mir-preview.png"
+import hueControllerPreview from "@/assets/esp32.jpg"
+import bleProtocolPreview from "@/assets/bleprotocol-preview1.png"
 
 interface BlogCard {
     title: string;
@@ -16,7 +18,23 @@ interface BlogCard {
     markdownFile?: string;
 }
 
-const blogCards: BlogCard[] = [ 
+const blogCards: BlogCard[] = [
+    {
+        title: "Transport Notification Protocol",
+        subtitle: "A custom protocol for real-time transport notifications using BLE",
+        description: "blg",
+        imageSrc: bleProtocolPreview,
+        tags: ["Embedded", "Rust", "IoT", "BLE"],
+        markdownFile: "blog/bleprotocol.md",
+    },
+    {
+        title: "Hue Controller",
+        subtitle: "Controlling Philips Hue lights with esp32 and Rust",
+        description: "blg",
+        imageSrc: hueControllerPreview,
+        tags: ["Embedded", "Rust", "IoT"],
+        markdownFile: "blog/huecontroller.md",
+    },
     {
         title: "Salty Green",
         subtitle: "Ship battle game",
