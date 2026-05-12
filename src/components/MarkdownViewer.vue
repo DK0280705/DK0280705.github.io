@@ -252,6 +252,14 @@ onMounted(() => {
     margin: 1rem 0;
 }
 
+.markdown-body :deep(ul) {
+    list-style: disc;
+}
+
+.markdown-body :deep(ol) {
+    list-style: decimal;
+}
+
 .markdown-body :deep(blockquote) {
     margin: 1.5rem 0;
     padding: 1rem 1.25rem;

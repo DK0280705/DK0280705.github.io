@@ -4,6 +4,7 @@ import ExpandableCard from "@/components/ExpandableCard.vue";
 import previewGif from "@/assets/oiia-cat.gif"
 
 import saltyGreenPreview from "@/assets/salty-green-preview.png"
+import theMemesPreview from "@/assets/the-memes-preview.png"
 import mirPreview from "@/assets/mir-preview.png"
 
 interface BlogCard {
@@ -15,7 +16,31 @@ interface BlogCard {
     markdownFile?: string;
 }
 
-const blogCards: BlogCard[] = [
+const blogCards: BlogCard[] = [ 
+    {
+        title: "Salty Green",
+        subtitle: "Ship battle game",
+        description: "blg",
+        imageSrc: saltyGreenPreview,
+        tags: ["Game", "Physics", "Godot"],
+        markdownFile: "blog/saltygreen.md",
+    },
+    {
+        title: "The Memes",
+        subtitle: "2022 Memes centered minigames",
+        description: "blg",
+        imageSrc: theMemesPreview,
+        tags: ["Game", "Memes", "Godot"],
+        markdownFile: "blog/thememes.md",
+    },
+    {
+        title: "May I Return",
+        subtitle: "First metroidvania game",
+        description: "blg",
+        imageSrc: mirPreview,
+        tags: ["Game", "Metroidvania", "Godot"],
+        markdownFile: "blog/mayireturn.md",
+    },
     {
         title: "Hello World",
         subtitle: "It works",
@@ -24,23 +49,6 @@ const blogCards: BlogCard[] = [
         tags: ["Vue", "Graphics", "Website"],
         markdownFile: "blog/helloworld.md",
     },
-    {
-        title: "Salty Green",
-        subtitle: "Ship battle game",
-        description: "blg",
-        imageSrc: saltyGreenPreview,
-        tags: ["Game", "Physics"],
-        markdownFile: "blog/saltygreen.md",
-    },
-    {
-        title: "May I Return",
-        subtitle: "First metroidvania game",
-        description: "blg",
-        imageSrc: mirPreview,
-        tags: ["Game", "Design"],
-        markdownFile: "blog/mayireturn.md",
-    },
-    
 ];
 
 const selectedTags = ref<string[]>([]);
