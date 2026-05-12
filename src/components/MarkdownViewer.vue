@@ -3,6 +3,8 @@ import hljs from "highlight.js";
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
 import { gfmHeadingId } from "marked-gfm-heading-id";
+import markedKatex from "marked-katex-extension";
+import "katex/dist/katex.min.css";
 
 const marked = new Marked(
     markedHighlight({
@@ -19,6 +21,9 @@ const marked = new Marked(
 marked.use(
     gfmHeadingId({
         prefix: "",
+    }),
+    markedKatex({
+        throwOnError: false,
     }),
 );
 

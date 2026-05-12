@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
-import previewImage from "@/assets/oiia.avif";
+
+import saltyGreenPreview from "@/assets/salty-green-preview.png"
 
 interface ProjectCard {
     title: string;
@@ -14,12 +15,12 @@ interface ProjectCard {
 
 const projectCards: ProjectCard[] = [
     {
-        title: "Hello World",
-        subtitle: "The website is almost done",
+        title: "Salty Green",
+        subtitle: "Ship battle game",
         description: "",
-        imageSrc: previewImage,
-        tags: ["It", "Works"],
-        markdownFile: "helloworld.md",
+        imageSrc: saltyGreenPreview,
+        tags: ["Game", "Physics"],
+        markdownFile: "saltygreen.md",
     },
 ];
 

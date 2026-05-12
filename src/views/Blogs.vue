@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
-import previewImage from "@/assets/oiia.avif";
 import previewGif from "@/assets/oiia-cat.gif"
 
 interface BlogCard {
@@ -15,27 +14,11 @@ interface BlogCard {
 
 const blogCards: BlogCard[] = [
     {
-        title: "Test Title 1",
-        subtitle: "This is a massive long subtitle for testing yes yes yes",
-        description: "",
-        imageSrc: previewImage,
-        tags: ["Game", "Development", "Research"],
-        markdownFile: "helloworld.md",
-    },
-    {
-        title: "Test for a very long title that might span multiple lines yes yes yes",
-        subtitle: "Short subtitle",
-        description: "",
-        imageSrc: previewGif,
-        tags: ["UI/UX", "Research", "Performance"],
-        markdownFile: "helloworld.md",
-    },
-    {
-        title: "Test Title 2",
+        title: "Hello World",
         subtitle: "It works",
         description: "",
-        imageSrc: previewImage,
-        tags: ["WebGL", "Graphics", "Balls", "Sigma", "Development"],
+        imageSrc: previewGif,
+        tags: ["Vue", "Graphics", "Website"],
         markdownFile: "helloworld.md",
     },
 ];
