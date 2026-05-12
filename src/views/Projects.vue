@@ -4,6 +4,7 @@ import ExpandableCard from "@/components/ExpandableCard.vue";
 
 import mirPreview from "@/assets/mir-preview.png"
 import oiia from "@/assets/oiia-cat.gif"
+import obfuscationExperimentPreview from "@/assets/obf-preview.png"
 
 interface ProjectCard {
     title: string;
@@ -14,14 +15,14 @@ interface ProjectCard {
     markdownFile?: string;
 }
 
-const projectCards: ProjectCard[] = [
+const projectCards: ProjectCard[] = [ 
     {
-        title: "May I Return",
-        subtitle: "First metroidvania game",
+        title: "May I Comeback",
+        subtitle: "A RTS game",
         description: "prj",
-        imageSrc: mirPreview,
+        imageSrc: oiia,
         tags: ["Game", "Design"],
-        markdownFile: "project/mayireturn.md",
+        markdownFile: "project/mayicomeback.md",
     },
     {
         title: "May I Return: Reborn",
@@ -30,15 +31,23 @@ const projectCards: ProjectCard[] = [
         imageSrc: oiia,
         tags: ["Game", "Design"],
         markdownFile: "project/mir-reborn.md",
+    }, 
+    {
+        title: "Obfuscation Experiment",
+        subtitle: "Evaluating LLM effectiveness on obfuscated code",
+        description: "prj",
+        imageSrc: obfuscationExperimentPreview,
+        tags: ["Research", "LLM"],
+        markdownFile: "project/obfuscation-experiment.md",
     },
     {
-        title: "May I Comeback",
-        subtitle: "A RTS game",
+        title: "May I Return",
+        subtitle: "First metroidvania game",
         description: "prj",
-        imageSrc: oiia,
+        imageSrc: mirPreview,
         tags: ["Game", "Design"],
-        markdownFile: "project/mayicomeback.md",
-    }
+        markdownFile: "project/mayireturn.md",
+    },
 ];
 
 const selectedTags = ref<string[]>([]);
