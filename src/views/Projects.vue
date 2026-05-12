@@ -2,7 +2,8 @@
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
 
-import saltyGreenPreview from "@/assets/salty-green-preview.png"
+import mirPreview from "@/assets/mir-preview.png"
+import oiia from "@/assets/oiia-cat.gif"
 
 interface ProjectCard {
     title: string;
@@ -15,13 +16,29 @@ interface ProjectCard {
 
 const projectCards: ProjectCard[] = [
     {
-        title: "Salty Green",
-        subtitle: "Ship battle game",
-        description: "",
-        imageSrc: saltyGreenPreview,
-        tags: ["Game", "Physics"],
-        markdownFile: "saltygreen.md",
+        title: "May I Return",
+        subtitle: "First metroidvania game",
+        description: "prj",
+        imageSrc: mirPreview,
+        tags: ["Game", "Design"],
+        markdownFile: "project/mayireturn.md",
     },
+    {
+        title: "May I Return: Reborn",
+        subtitle: "May I Return remake",
+        description: "prj",
+        imageSrc: oiia,
+        tags: ["Game", "Design"],
+        markdownFile: "project/mir-reborn.md",
+    },
+    {
+        title: "May I Comeback",
+        subtitle: "A RTS game",
+        description: "prj",
+        imageSrc: oiia,
+        tags: ["Game", "Design"],
+        markdownFile: "project/mayicomeback.md",
+    }
 ];
 
 const selectedTags = ref<string[]>([]);
