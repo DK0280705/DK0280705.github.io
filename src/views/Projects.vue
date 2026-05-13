@@ -1,66 +1,18 @@
+<script lang="ts">
+import { useContentCards } from "@/composables/useContentCards";
+</script>
+
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
 
-import mirPreview from "@/assets/mir-preview.png"
-import oiia from "@/assets/oiia-cat.gif"
-import obfuscationExperimentPreview from "@/assets/obf-preview.png"
-
-interface ProjectCard {
-    title: string;
-    subtitle: string;
-    description: string;
-    imageSrc: string;
-    tags: string[];
-    markdownFile?: string;
-}
-
-const projectCards: ProjectCard[] = [ 
-    {
-        title: "May I Comeback",
-        subtitle: "A RTS game",
-        description: "prj",
-        imageSrc: oiia,
-        tags: ["Game", "Design"],
-        markdownFile: "project/mayicomeback.md",
-    },
-    {
-        title: "May I Return: Reborn",
-        subtitle: "May I Return remake",
-        description: "prj",
-        imageSrc: oiia,
-        tags: ["Game", "Design"],
-        markdownFile: "project/mir-reborn.md",
-    }, 
-    {
-        title: "Obfuscation Experiment",
-        subtitle: "Evaluating LLM effectiveness on obfuscated code",
-        description: "prj",
-        imageSrc: obfuscationExperimentPreview,
-        tags: ["Research", "LLM"],
-        markdownFile: "project/obfuscation-experiment.md",
-    },
-    {
-        title: "May I Return",
-        subtitle: "First metroidvania game",
-        description: "prj",
-        imageSrc: mirPreview,
-        tags: ["Game", "Design"],
-        markdownFile: "project/mayireturn.md",
-    },
-];
+const { cards: projectCards, allTags: projectAllTags } = useContentCards("project");
 
 const selectedTags = ref<string[]>([]);
 
-const allTags = computed(() => {
-    const tagSet = new Set<string>();
-    projectCards.forEach((card) => card.tags.forEach((tag) => tagSet.add(tag)));
-    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
-});
-
 const filteredCards = computed(() => {
-    if (!selectedTags.value.length) return projectCards;
-    return projectCards.filter((card) =>
+    if (!selectedTags.value.length) return projectCards.value;
+    return projectCards.value.filter((card) =>
         selectedTags.value.every((tag) => card.tags.includes(tag))
     );
 });
@@ -99,7 +51,7 @@ const clearTags = () => {
                 Some projects and researches that I have worked on with links to source code.
             </p>
             <div
-                v-if="allTags.length"
+                v-if="projectAllTags.length"
                 class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 p-4 backdrop-blur-2xl"
             >
                 <button
@@ -111,7 +63,7 @@ const clearTags = () => {
                     None
                 </button>
                 <button
-                    v-for="tag in allTags"
+                    v-for="tag in projectAllTags"
                     :key="tag"
                     type="button"
                     class="rounded-full border border-white/10 px-4 py-1.5 text-sm transition hover:-translate-y-0.5"
@@ -132,8 +84,7 @@ const clearTags = () => {
                 :key="card.title"
                 :title="card.title"
                 :subtitle="card.subtitle"
-                :description="card.description"
-                :image-src="card.imageSrc"
+                :image-src="card.image"
                 :tags="card.tags"
                 :markdown-file="card.markdownFile"
             />

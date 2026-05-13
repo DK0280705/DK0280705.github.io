@@ -1,3 +1,10 @@
+---
+title: "Transport Notification Protocol"
+subtitle: "A custom protocol for real-time transport notifications using BLE"
+image: "@/assets/bleprotocol-preview1.png"
+tags: ["Embedded", "Rust", "IoT", "BLE"]
+---
+
 This is a project made for Liberal Arts subject presentation.
 Mainly made to help people with hearing issues.
 

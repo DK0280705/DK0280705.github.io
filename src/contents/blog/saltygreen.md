@@ -1,3 +1,10 @@
+---
+title: "Salty Green"
+subtitle: "Ship battle game"
+image: "@/assets/salty-green-preview.png"
+tags: ["Game", "Physics", "Godot"]
+---
+
 [source code](https://github.com/KoloidStudios/salty-green)
 
 This is the third game our team planned to make,

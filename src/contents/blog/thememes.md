@@ -1,3 +1,10 @@
+---
+title: "The Memes"
+subtitle: "2022 Memes centered minigames"
+image: "@/assets/the-memes-preview.png"
+tags: ["Game", "Memes", "Godot"]
+---
+
 This is the second game i take part in KoloidStudios.
 Mainly aimed to win a game jam competition held by ITB (Bandung Institute of Technology).
 The theme of the game jam was 2022 local memes,

@@ -1,3 +1,10 @@
+---
+title: "Hello World"
+subtitle: "It works"
+image: "@/assets/oiia-cat.gif"
+tags: ["Vue", "Graphics", "Website"]
+---
+
 # Hello World! 🌍
 
 Welcome to this **comprehensive markdown showcase** that demonstrates all the amazing features of Markdown!

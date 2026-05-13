@@ -1,3 +1,10 @@
+---
+title: "May I Return"
+subtitle: "First metroidvania game"
+image: "@/assets/mir-preview.png"
+tags: ["Game", "Metroidvania", "Godot"]
+---
+
 ## This is where it all begins.
 
 My first time as a game programmer. Thought it would be no hassle,

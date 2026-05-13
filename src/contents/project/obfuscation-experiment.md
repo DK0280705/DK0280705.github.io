@@ -1,3 +1,10 @@
+---
+title: "Obfuscation Experiment"
+subtitle: "Evaluating LLM effectiveness on obfuscated code"
+image: "@/assets/obf-preview.png"
+tags: ["Research", "LLM"]
+---
+
 These are the results from testing with different small LLM models with obfuscated sorting algorithms.
 ![Analysis](@/assets/obf-analysis.png)
 ![Heatmaps](@/assets/obf-heatmaps.png)

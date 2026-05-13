@@ -10,34 +10,24 @@ import {
 import { AnimatePresence, motion } from "motion-v";
 
 const MarkdownViewer = defineAsyncComponent({
-    loader: async () => { await new Promise(r => setTimeout(r, 1000)); return import("./MarkdownViewer.vue"); },
+    loader: async () => { await new Promise(r => setTimeout(r, 500)); return import("./MarkdownViewer.vue"); },
 });
 
 interface Props {
     title: string;
     subtitle: string;
     imageSrc: string;
-    imageAlt?: string;
-    description?: string;
-    modalTitle?: string;
     markdownFile?: string;
     tags?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    imageAlt: "",
-    description: "",
-    modalTitle: "",
     tags: () => [],
 });
 
 const isOpen = ref(false);
-const modalBodyRef = ref<HTMLElement>();
 const cardZIndex = ref<number>(0);
-
-const onAnimationComplete = () => {
-    cardZIndex.value = 0;
-}
+const modalBodyRef = ref<HTMLElement>();
 
 const scrollModalToTop = () => {
     const body = modalBodyRef.value;
@@ -95,7 +85,7 @@ onBeforeUnmount(() => {
                 class="fixed inset-0 grid place-items-stretch sm:place-items-center p-0 sm:p-8 z-[2001] pointer-events-none"
             >
                 <motion.div
-                    :layout-id="`ec-${title}-${description}`"
+                    :layout-id="`ec-${markdownFile}`"
                     class="relative overflow-auto w-full h-full max-w-full sm:max-w-5xl sm:max-h-[min(80vh,100%)] rounded-none sm:rounded-2xl border-0 sm:border sm:border-white/10 shadow-none sm:shadow-[0_30px_80px_rgba(0,0,0,0.45)] pointer-events-auto"
                 >
                     <section
@@ -107,15 +97,15 @@ onBeforeUnmount(() => {
                         >
                             <motion.div
                                 class="absolute inset-0 before:absolute before:inset-0 before:bg-gradient-to-t before:from-zinc-950"
-                                :layout-id="`ec-img-${title}-${description}`"
+                                :layout-id="`ec-img-${markdownFile}`"
                             >
                                 <img
                                     class="h-full w-full object-cover object-center"
                                     :src="imageSrc"
-                                    :alt="imageAlt || title"
+                                    :alt="title"
                                 />
                             </motion.div>
-                            <motion.div layout="position" :layout-id="`ec-info-${title}-${description}`" class="z-2 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
+                            <motion.div layout="position" :layout-id="`ec-info-${markdownFile}`" class="z-2 px-6 pb-8 pt-6 sm:px-8 sm:pb-10 flex flex-col gap-2">
                                 <p  class="text-base text-white/75">{{ subtitle }}</p>
                                 <h2 class="text-2xl font-extrabold text-white">{{ title }}</h2>
                                 <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
@@ -138,7 +128,7 @@ onBeforeUnmount(() => {
                                             <span class="skeleton h-4 w-24 rounded-full"></span>
                                             <span class="skeleton h-8 w-2/3 rounded-md"></span>
                                             <span class="skeleton h-5 w-1/2 rounded-md"></span>
-                                        </div>
+                                        </div>invisible
                                         <div class="flex flex-col gap-3">
                                             <span class="skeleton h-4 w-20 rounded-full"></span>
                                             <span class="skeleton h-4 w-full rounded-md"></span>
@@ -208,48 +198,45 @@ onBeforeUnmount(() => {
             </div>
         </AnimatePresence>
     </Teleport>
-    <AnimatePresence>
-        <motion.button
-            v-if="!isOpen"
-            class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer backdrop-blur-2xl"
-            role="dialog"
-            :layout-id="`ec-${title}-${description}`"
-            :style="cardZIndex ? { zIndex: cardZIndex } : undefined"
-            :while-hover="{ scale: 1.05 }"
-            @click="openModal"
-            @keyup.enter="openModal"
-            @layout-animation-complete="onAnimationComplete"
+    <motion.button
+        class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer backdrop-blur-2xl"
+        :class="{ 'invisible pointer-events-none': isOpen }"
+        role="dialog"
+        :layout-id="`ec-${markdownFile}`"
+        :style="cardZIndex ? { zIndex: cardZIndex } : undefined"
+        :while-hover="{ scale: 1.05 }"
+        @click="openModal"
+        @keyup.enter="openModal"
+    >
+        <motion.div
+            :layout-id="`ec-img-${markdownFile}`"
+            class="relative"
         >
-            <motion.div
-                :layout-id="`ec-img-${title}-${description}`"
-                class="relative"
-            >
-                <img
-                    class="h-56 w-full object-cover rounded-lg object-center"
-                    :src="imageSrc"
-                    :alt="imageAlt || title"
-                    loading="lazy"
-                />
-            </motion.div>
-            <motion.div layout="position" :layout-id="`ec-info-${title}-${description}`" class="p-2 flex flex-col gap-1 text-white/90">
-                <p class="text-left text-base text-white/75">
-                    {{ subtitle }}
-                </p>
-                <h2 class="text-left text-xl font-extrabold text-white">
-                    {{ title }}
-                </h2>
-                <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
-                    <li
-                        v-for="tag in props.tags"
-                        :key="tag"
-                        class="px-3 py-1 rounded-full text-xs tracking-wide bg-white/10 text-white/80 border border-white/15"
-                    >
-                        {{ tag }}
-                    </li>
-                </ul>
-            </motion.div>
-        </motion.button>
-    </AnimatePresence>
+            <img
+                class="h-56 w-full object-cover rounded-lg object-center"
+                :src="imageSrc"
+                :alt="title"
+                loading="lazy"
+            />
+        </motion.div>
+        <motion.div layout="position" :layout-id="`ec-info-${markdownFile}`" class="p-2 flex flex-col gap-1 text-white/90">
+            <p class="text-left text-base text-white/75">
+                {{ subtitle }}
+            </p>
+            <h2 class="text-left text-xl font-extrabold text-white">
+                {{ title }}
+            </h2>
+            <ul v-if="hasTags" class="flex flex-wrap gap-1.5 mt-2 list-none">
+                <li
+                    v-for="tag in props.tags"
+                    :key="tag"
+                    class="px-3 py-1 rounded-full text-xs tracking-wide bg-white/10 text-white/80 border border-white/15"
+                >
+                    {{ tag }}
+                </li>
+            </ul>
+        </motion.div>
+    </motion.button>
 </template>
 
 <style scoped>

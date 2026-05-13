@@ -1,85 +1,18 @@
+<script lang="ts">
+import { useContentCards } from "@/composables/useContentCards";
+</script>
+
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import ExpandableCard from "@/components/ExpandableCard.vue";
-import previewGif from "@/assets/oiia-cat.gif"
 
-import saltyGreenPreview from "@/assets/salty-green-preview.png"
-import theMemesPreview from "@/assets/the-memes-preview.png"
-import mirPreview from "@/assets/mir-preview.png"
-import hueControllerPreview from "@/assets/esp32.jpg"
-import bleProtocolPreview from "@/assets/bleprotocol-preview1.png"
-
-interface BlogCard {
-    title: string;
-    subtitle: string;
-    description: string;
-    imageSrc: string;
-    tags: string[];
-    markdownFile?: string;
-}
-
-const blogCards: BlogCard[] = [
-    {
-        title: "Transport Notification Protocol",
-        subtitle: "A custom protocol for real-time transport notifications using BLE",
-        description: "blg",
-        imageSrc: bleProtocolPreview,
-        tags: ["Embedded", "Rust", "IoT", "BLE"],
-        markdownFile: "blog/bleprotocol.md",
-    },
-    {
-        title: "Hue Controller",
-        subtitle: "Controlling Philips Hue lights with esp32 and Rust",
-        description: "blg",
-        imageSrc: hueControllerPreview,
-        tags: ["Embedded", "Rust", "IoT"],
-        markdownFile: "blog/huecontroller.md",
-    },
-    {
-        title: "Salty Green",
-        subtitle: "Ship battle game",
-        description: "blg",
-        imageSrc: saltyGreenPreview,
-        tags: ["Game", "Physics", "Godot"],
-        markdownFile: "blog/saltygreen.md",
-    },
-    {
-        title: "The Memes",
-        subtitle: "2022 Memes centered minigames",
-        description: "blg",
-        imageSrc: theMemesPreview,
-        tags: ["Game", "Memes", "Godot"],
-        markdownFile: "blog/thememes.md",
-    },
-    {
-        title: "May I Return",
-        subtitle: "First metroidvania game",
-        description: "blg",
-        imageSrc: mirPreview,
-        tags: ["Game", "Metroidvania", "Godot"],
-        markdownFile: "blog/mayireturn.md",
-    },
-    {
-        title: "Hello World",
-        subtitle: "It works",
-        description: "",
-        imageSrc: previewGif,
-        tags: ["Vue", "Graphics", "Website"],
-        markdownFile: "blog/helloworld.md",
-    },
-];
+const { cards: blogCards, allTags: blogAllTags } = useContentCards("blog");
 
 const selectedTags = ref<string[]>([]);
 
-const allTags = computed(() => {
-    const tagSet = new Set<string>();
-    blogCards.forEach((card) => card.tags.forEach((tag) => tagSet.add(tag)));
-    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
-});
-
 const filteredCards = computed(() => {
-    if (!selectedTags.value.length) return blogCards;
-    return blogCards.filter((card) =>
+    if (!selectedTags.value.length) return blogCards.value;
+    return blogCards.value.filter((card) =>
         selectedTags.value.every((tag) => card.tags.includes(tag))
     );
 });
@@ -119,7 +52,7 @@ const clearTags = () => {
             </p>
 
             <div
-                v-if="allTags.length"
+                v-if="blogAllTags.length"
                 class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 p-4 backdrop-blur-2xl"
             >
                 <button
@@ -131,7 +64,7 @@ const clearTags = () => {
                     None
                 </button>
                 <button
-                    v-for="tag in allTags"
+                    v-for="tag in blogAllTags"
                     :key="tag"
                     type="button"
                     class="rounded-full border border-white/10 px-4 py-1.5 text-sm transition hover:-translate-y-0.5"
@@ -152,8 +85,7 @@ const clearTags = () => {
                 :key="card.title"
                 :title="card.title"
                 :subtitle="card.subtitle"
-                :description="card.description"
-                :image-src="card.imageSrc"
+                :image-src="card.image"
                 :tags="card.tags"
                 :markdown-file="card.markdownFile"
             />
