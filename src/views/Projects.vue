@@ -52,7 +52,7 @@ const clearTags = () => {
             </p>
             <div
                 v-if="projectAllTags.length"
-                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 p-4 backdrop-blur-2xl"
+                class="sticky top-[calc(6rem+3.5rem)] z-10 flex flex-wrap gap-2 rounded-2xl border border-white/10 p-4 bg-zinc-950/25 backdrop-blur-2xl"
             >
                 <button
                     type="button"
@@ -91,7 +91,7 @@ const clearTags = () => {
         </div>
         <div
             v-else
-            class="flex flex-1 flex-col items-center justify-center gap-4 rounded-3xl border border-white/10 bg-white/5 px-6 py-12 text-center text-white/70"
+            class="flex flex-1 flex-col items-center justify-center gap-4 rounded-3xl border border-white/10 bg-zinc-950/75 px-6 py-12 text-center text-white/70 backdrop-blur-2xl"
         >
             <h3 class="text-2xl font-semibold text-white">No matching projects</h3>
             <p class="max-w-md text-base">

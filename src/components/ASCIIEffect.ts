@@ -15,7 +15,6 @@ uniform float uCellSize;
 uniform float uTime;
 
 const vec2 SIZE = vec2(16.);
-const mat2 NOISE_ROT = mat2(0.8, 0.6, -0.6, 0.8);
 
 vec3 hsv2rgb(vec3 c) {
     vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
@@ -23,22 +22,13 @@ vec3 hsv2rgb(vec3 c) {
     return c.z * mix(vec3(1.0), rgb, c.y);
 }
 
-// Add modern colorful gradient function with gentle movement returns vec3
+// Screen-wide gradient using the same hue->rgb path, different flow
 vec3 gradientEffect(vec2 uv, float time) {
     vec2 centered = uv - 0.5;
-    vec2 rotated = NOISE_ROT * centered;
-    vec2 animated = rotated + vec2(time * 0.02, -time * 0.015);
-
-    float linear = clamp(animated.x * 0.75 + 0.5, 0.0, 1.0);
-    float wave = 0.5 + 0.5 * sin((animated.y + time * 0.3) * 3.14159265);
-    float mixFactor = smoothstep(0.0, 1.0, linear * 0.7 + wave * 0.3);
-
-    vec3 colorA = hsv2rgb(vec3(fract(0.56 + time * 0.03), 0.5, 0.85));
-    vec3 colorB = hsv2rgb(vec3(fract(0.82 + time * 0.05), 0.7, 0.95));
-    vec3 blended = mix(colorA, colorB, mixFactor);
-
+    float hue = fract(time * 0.07 + uv.x * 0.25 - uv.y * 0.15);
+    vec3 color = hsv2rgb(vec3(hue, 0.6, 0.9));
     float edgeFade = smoothstep(1.0, 0.35, length(centered));
-    return blended * edgeFade;
+    return color * edgeFade;
 }
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
@@ -58,7 +48,6 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     float hue = fract(uTime * 0.1 + pixelizedUV.x * 0.35 + pixelizedUV.y * 0.45 + characterProgress * 0.1);
     vec3 rainbow = hsv2rgb(vec3(hue, 0.9, 1.0));
     asciiCharacter.rgb = characterProgress * (rainbow * asciiCharacter.r * 0.4 + gradientEffect(pixelizedUV, uTime) * 0.05);
-    asciiCharacter.rgb = clamp(asciiCharacter.rgb, 0.0, 1.0);
     asciiCharacter.a = pixelized.a;
     outputColor = asciiCharacter;
 }
@@ -82,7 +71,7 @@ export class ASCIIEffect extends Effect {
             ['uCharacters', new Uniform(new Texture())],
             ['uCellSize', new Uniform(cellSize)],
             ['uCharactersCount', new Uniform(characters.length)],
-            ['uTime', new Uniform(0)]
+            ['uTime', new Uniform(0)],
         ]);
 
         super('ASCIIEffect', fragment, { uniforms });

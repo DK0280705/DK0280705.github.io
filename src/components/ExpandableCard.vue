@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
                         </div>
                     </section>
                     <button
-                        class="absolute top-4 right-4 flex items-center justify-center border border-white/10 bg-white/10 text-xl w-10 h-10 rounded-full cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.2)] backdrop-blur-2xl] transition-colors duration-200 hover:bg-white/30"
+                        class="absolute top-4 right-4 flex items-center justify-center border border-white/10 bg-white/10 text-xl w-10 h-10 rounded-full cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.2)] bg-zinc-950/25 backdrop-blur-2xl transition-colors duration-200 hover:bg-white/30"
                         type="button"
                         aria-label="Close"
                         @click="closeModal"
@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
         </AnimatePresence>
     </Teleport>
     <motion.button
-        class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer backdrop-blur-2xl"
+        class="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 cursor-pointer bg-zinc-950/25 backdrop-blur-2xl"
         :class="{ 'invisible pointer-events-none': isOpen }"
         role="dialog"
         :layout-id="`ec-${markdownFile}`"

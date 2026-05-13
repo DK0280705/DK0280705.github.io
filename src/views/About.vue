@@ -51,7 +51,7 @@ const toolboxSections = [
                         <article
                             v-for="section in toolboxSections"
                             :key="section.title"
-                            class="flex h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_0_30px_rgba(15,15,15,0.35)] backdrop-blur-2xl transition duration-200 ease-out hover:-translate-y-0.5 hover:border-white/30"
+                            class="flex h-full flex-col rounded-2xl border border-white/10 p-4 shadow-[0_0_30px_rgba(15,15,15,0.35)] bg-zinc-950/25 backdrop-blur-2xl transition duration-200 ease-out hover:-translate-y-0.5 hover:border-white/30"
                         >
                             <h4 class="text-lg font-semibold text-white">{{ section.title }}</h4>
                             <p class="mt-2 text-sm text-white/70">
@@ -90,7 +90,7 @@ const toolboxSections = [
                     </span>
                 </div>
 
-                <div class="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-2xl">
+                <div class="rounded-xl border border-white/10 p-4 bg-zinc-950/75">
                     <ul class="flex list-none justify-center gap-2">
                         <li>
                             <a

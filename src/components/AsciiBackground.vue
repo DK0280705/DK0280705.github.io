@@ -43,8 +43,15 @@ const updateRendererSize = () => {
     composer.setSize(width, height);
 };
 
-const renderFrame = () => {
+let lastFrameMs = 0;
+const FRAME_INTERVAL = 1000 / 16;
+
+const renderFrame = (timestamp: number) => {
     animationId = requestAnimationFrame(renderFrame);
+
+    if (timestamp - lastFrameMs < FRAME_INTERVAL) return;
+    lastFrameMs = timestamp;
+
     const delta = clock.getDelta();
     const elapsed = clock.getElapsedTime();
 
@@ -100,7 +107,7 @@ const initScene = () => {
 
     updateRendererSize();
     clock.start();
-    renderFrame();
+    renderFrame(0);
 };
 
 onMounted(() => {
